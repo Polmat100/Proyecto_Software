@@ -1,0 +1,18 @@
+PLATAFORMA DE COMERCIO ELECTRODNICO
+
+Sistema donde los usuarios puedan:
+- Ver productos a la venta en paginas seccionadas por categoría (Tecnología, moda, hogar...)
+- Buscar productos
+- Comprar productos
+- Añadir y editar un perfil de usuario como vendedor
+
+ARQUITECTURA: Cliente-Servidor
+BD: MySQL
+LENGUAJES:
+ - Front: JavaScript con algún framework (React o Angular) para el diseño de las paginas
+	  Uso de fetch o axios para comunicación con API del back
+
+ - Back: Java (o si quieren otro lenguaje para el back)
+	 Si es Java, podemos incluir Spring Boot como framework
+
+La comunicación entre el front y back, seria mediante APIs, es decir, el front(usuarios) realizan una petición y se la mandara al back, el back realiza lo que tenga que hacer y devuelve los datos o al front para que se los muestre al usuario.
