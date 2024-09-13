@@ -25,3 +25,13 @@ Este proyecto es una **plataforma de comercio electrónico** que permite a los u
 - **React.js**
 - **Fetch**
 - **Bootstrap**
+_______________________________________________________________________
+
+## Configuracion para correr el proyecto
+
+### Frontend
+- Necesario tener instalado NODE.JS
+- Abrir la carpeta de front-react con Visual Studio
+- En la consola poner: npm install
+- En la consola poner: npm run dev
+- Mediante un navegador web ingresar a la direccion que se mostrara
