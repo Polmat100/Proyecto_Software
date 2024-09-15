@@ -35,3 +35,12 @@ _______________________________________________________________________
 - En la consola poner: npm install
 - En la consola poner: npm run dev
 - Mediante un navegador web ingresar a la direccion que se mostrara
+
+_______________________________________________________________________
+
+## Integrantes:
+-
+-Diego Elbert Soncco Calla - deDiegoSC
+-
+-
+-
