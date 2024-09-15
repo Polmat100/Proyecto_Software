@@ -39,8 +39,8 @@ _______________________________________________________________________
 _______________________________________________________________________
 
 ## Integrantes:
--
--Diego Elbert Soncco Calla - deDiegoSC
--
--
--
+- Oscata Flores, Luis Humberto - h-oscata
+- Soncco Calla, Diego Elberto - deDiegoSC
+- Alvarado Arenas, Angel Gabriel - angelalva10
+- Molloco Quispe, Deyvi Benito - deyviM1230
+- Cayllahua Camacho, Matias Renato - Polmat100
