@@ -75,7 +75,7 @@ function Footer() {
           </div>
         </div>
         <div className="container border-top py-4">
-          © 2022 Company, Inc. All rights reserved.
+          © 2024 Company, Inc. All rights reserved.
         </div>
       </footer>
     </>
