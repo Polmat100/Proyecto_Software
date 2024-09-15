@@ -39,7 +39,7 @@ function Header() {
               </svg>
             </div>
           </a>
-          <a href="/html/Usuario.html" className="text-light">
+          <a href="/html/UserProfile.html" className="text-light">
             <div className="box box-icon rounded px-3 py-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
