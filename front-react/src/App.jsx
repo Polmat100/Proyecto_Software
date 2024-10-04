@@ -1,9 +1,10 @@
 import "./App.css";
 import Footer from "./components/Footer";
-import Header from "./components/Header";
+import { Header } from "./components/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-function App() {
+export const App = () => {
   //Cuando el back este listo, se realizaran las peticiones para obtener estos datos
   //Array ejemplo de PRODUCTOS para crear las cards
   const products = [
@@ -93,8 +94,8 @@ function App() {
       <div className="p-5">
         <h3>Productos</h3>
         <div className="row">
-          {products.map((product) => (
-            <div className="col-md-3 my-4">
+          {products.map((product, key) => (
+            <div key={key} className="col-md-3 my-4">
               <div className="card py-2 bg-warning-subtle">
                 <div className="card-img-top">
                   <svg
@@ -102,7 +103,7 @@ function App() {
                     width="100"
                     height="100"
                     fill="currentColor"
-                    class="bi bi-laptop"
+                    className="bi bi-laptop"
                     viewBox="0 0 16 16"
                   >
                     <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5" />
@@ -126,8 +127,8 @@ function App() {
       <div className="p-5 border-top">
         <h3>Categorias</h3>
         <div className="row my-4">
-          {categories.map((category) => (
-            <div className="col-md-4">
+          {categories.map((category, key) => (
+            <div key={key} className="col-md-4">
               <div className="card d-flex flex-row p-4 bg-light">
                 <div className="d-flex align-items-center px-3">
                   <svg
@@ -135,7 +136,7 @@ function App() {
                     width="100"
                     height="100"
                     fill="currentColor"
-                    class="bi bi-box"
+                    className="bi bi-box"
                     viewBox="0 0 16 16"
                   >
                     <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z" />
@@ -162,7 +163,7 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-person-check"
+              className="bi bi-person-check"
               viewBox="0 0 16 16"
             >
               <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
@@ -178,7 +179,7 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-images"
+              className="bi bi-images"
               viewBox="0 0 16 16"
             >
               <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
@@ -194,7 +195,7 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-card-checklist"
+              className="bi bi-card-checklist"
               viewBox="0 0 16 16"
             >
               <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
@@ -213,7 +214,7 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-clock-history"
+              className="bi bi-clock-history"
               viewBox="0 0 16 16"
             >
               <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z" />
@@ -235,7 +236,7 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-search-heart"
+              className="bi bi-search-heart"
               viewBox="0 0 16 16"
             >
               <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018" />
@@ -251,7 +252,7 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-cart-check"
+              className="bi bi-cart-check"
               viewBox="0 0 16 16"
             >
               <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z" />
@@ -269,11 +270,11 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-list-check"
+              className="bi bi-list-check"
               viewBox="0 0 16 16"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0"
               />
             </svg>
@@ -287,7 +288,7 @@ function App() {
               width="80"
               height="80"
               fill="currentColor"
-              class="bi bi-check2-circle"
+              className="bi bi-check2-circle"
               viewBox="0 0 16 16"
             >
               <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -303,6 +304,4 @@ function App() {
       <Footer />
     </>
   );
-}
-
-export default App;
+};
