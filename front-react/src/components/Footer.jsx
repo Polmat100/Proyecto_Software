@@ -1,12 +1,14 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
   //Array de categorias temporal
-  const categories = ["Deportes", "Hogar", "Tecnologia", "Cocina"];
+  const categories = ["Deporte", "Hogar", "Tecnologia", "Estudio", "Moda"];
   const nombreNegocio = "U-MARKET";
   return (
     <>
-      <footer className="bg-dark text-light pt-4">
+      <footer className="bg-footer-custom text-light pt-4">
         <div className="container d-flex justify-content-evenly my-4">
-          <a href="#" className="text-light">
+          <Link to={"/"} className="text-light">
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -20,16 +22,20 @@ function Footer() {
               </svg>
               <h5 className="py-2">{nombreNegocio}</h5>
             </div>
-          </a>
+          </Link>
 
           <div className="text-start">
             <h5>Categorias</h5>
             <ul>
               {categories.map((category, key) => (
                 <li key={key}>
-                  <a href="#" className="text-info lh-lg">
+                  <Link
+                    to={`/${category}`}
+                    href="#"
+                    className="text-info lh-lg"
+                  >
                     {category}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
