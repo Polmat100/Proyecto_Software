@@ -61,7 +61,7 @@ export const ProductFormModal = (props) => {
                             required
                           />
                         </div>
-                      </div>
+                      </div>          
                     </div>
                     <div className="mb-4">
                       <h6 className="text-start">ESTADO:</h6>
