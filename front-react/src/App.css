@@ -55,6 +55,11 @@
   opacity: 0.8;
   transition: 0.2s;
 }
+.btn-add-to-cart {
+  background-color: rgb(40, 174, 28);
+  opacity: 0.8;
+  transition: 0.2s;
+}
 .btn-details:hover {
   opacity: 1;
 }
