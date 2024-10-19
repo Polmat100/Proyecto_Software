@@ -79,7 +79,7 @@ export const Deporte = () => {
           </Accordion>
         </div>
 
-        <div className="col-lg-9">
+        <div className="col-lg-9 mt-4">
           <div className="row">
             {productsDeporte.map((producte) => (
               <div key={producte.id} className="col-lg-4 col-md-6 mb-4">
@@ -98,7 +98,7 @@ export const Deporte = () => {
                     <h6>Precio: S/.{producte.price}</h6>
                   </div>
                   <a href="/add-to-cart" className="text-light py-3 btn-add-to-cart">
-                    <strong>Agregar al carro</strong>
+                    <strong>Hablar con el vendedor</strong>
                   </a>
                 </div>
               </div>

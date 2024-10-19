@@ -1,56 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; 
 import { Header } from "../../components/Header";
 import Footer from "../../components/Footer";
 import { ProductFormModal } from "../../components/ProductFormModal";
 
 export const UserPosts = () => {
-  //Array example for posts data
-  const posts = [
-    {
-      id: 1,
-      title: "Vintage Wooden Chair",
-      description:
-        "This beautifully crafted vintage wooden chair is a timeless piece that adds charm to any room. Made from high-quality oak, it features intricate carvings and a comfortable seat. Perfect for collectors or anyone looking to enhance their home decor.",
-      price: 75.0,
-      category: "Furniture",
-      date: "2023-09-15",
-    },
-    {
-      id: 2,
-      title: "Mountain Bike",
-      description:
-        "Experience the thrill of the trails with this high-performance mountain bike. It features a lightweight aluminum frame, 21-speed gear system, and durable tires designed for rugged terrains. Ideal for both beginners and seasoned riders looking for adventure.",
-      price: 350.0,
-      category: "Sporting Goods",
-      date: "2023-09-20",
-    },
-    {
-      id: 3,
-      title: "Smartphone - Latest Model",
-      description:
-        "Upgrade your tech with this brand new smartphone, still in its original box and never used. It boasts a stunning display, powerful processor, and an excellent camera for capturing life's moments. A perfect choice for anyone looking for a top-of-the-line device.",
-      price: 800.0,
-      category: "Electronics",
-      date: "2023-09-25",
-    },
-    {
-      id: 4,
-      title: "Coffee Maker",
-      description:
-        "Brew your favorite coffee every morning with this top-rated coffee maker. It features multiple brewing options, a programmable timer, and a built-in grinder for fresh coffee grounds. Compact and stylish, it fits perfectly on any countertop, making it an essential kitchen appliance.",
-      price: 40.0,
-      category: "Home Appliances",
-      date: "2023-09-30",
-    },
-  ];
+  const [posts, setPosts] = useState([]); 
   const [productModal, setProductModal] = useState(false);
+
   const showModal = () => setProductModal(true);
   const closeModal = () => setProductModal(false);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/products');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setPosts(data); 
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   return (
     <>
-      <Header></Header>
-
+      <Header />
       <div className="p-5 bg-body-secondary">
         <div className="mb-5 bg-light container border border-light-subtle rounded-4 py-5 shadow">
           <h5>Agrega un nuevo producto a la venta</h5>
@@ -91,25 +70,29 @@ export const UserPosts = () => {
                 <div className="col-md-3 mt-1">
                   <img
                     className="img-fluid img-responsive rounded product-image"
-                    src="https://i.imgur.com/HO8e9b8.jpg"
+                    src={post.imageUrl}
+                    alt={post.title}
+                    style={{ maxWidth: "80%", height: "auto" }} 
                   />
                 </div>
-                <div className="col-md-6 mt-1">
-                  <h5>{post.title}</h5>
-                  <div className="mt-1 mb-1 spec-1">
-                    <p>{post.description}</p>
+                <div className="col-md-6 mt-1 d-flex flex-column justify-content-between">
+                  <div>
+                    <h5>{post.name || post.title}</h5>
+                    <div className="mt-1 mb-1 spec-1">
+                      <p>{post.description}</p>
+                    </div>
+                    <div className="mt-1 mb-1 spec-1">
+                      <p className="text-danger fw-bold">{post.category}</p>
+                    </div>
+                    <div className="mt-1 mb-1 spec-1">
+                      <p className="text-success fw-semibold">{post.date}</p>
+                    </div>
                   </div>
-                  <div className="mt-1 mb-1 spec-1">
-                    <p className="text-danger fw-bold">{post.category}</p>
-                  </div>
-                  <div className="mt-1 mb-1 spec-1">
-                    <p className="text-success fw-semibold">{post.date}</p>
+                  <div className="align-items-center align-content-center mt-2">
+                    <h4 className="">S/. {post.price}</h4>
                   </div>
                 </div>
                 <div className="align-items-center align-content-center col-md-3 border-left mt-1">
-                  <div className="d-flex flex-row align-items-center justify-content-center py-3">
-                    <h4 className="">S/. {post.price}</h4>
-                  </div>
                   <div className="d-flex flex-column">
                     <button
                       className="btn btn-primary my-2 border border-dark-subtle fw-bold"
@@ -130,8 +113,7 @@ export const UserPosts = () => {
           </div>
         </div>
       </div>
-
-      <Footer></Footer>
+      <Footer />
     </>
   );
 };
