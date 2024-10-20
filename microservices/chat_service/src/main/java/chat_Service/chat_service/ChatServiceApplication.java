@@ -1,4 +1,4 @@
-package com.umarket.chat_service;
+package chat_Service.chat_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
