@@ -1,90 +1,62 @@
 package com.umarket.product_service.category_of_published_products.businesslogic.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "product")
+@Getter
+@Setter
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "product_id")
+    private Integer id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    private String category;
-    private String brand;
-    private double price;
+
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private ProductStatus status = ProductStatus.AVAILABLE;
+
+    @Column(name = "posted_at", updatable = false)
+    private LocalDateTime postedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Column(name = "image_url")
     private String imageUrl;
 
-    //Contructores
-
+    //CONSTRUCTORS
     public Product() {
+        this.postedAt = LocalDateTime.now();
     }
 
-    public Product(String name, String description, String category, String brand, double price, String imageUrl) {
+    public Product(String name, String description, Category category, String imageUrl, BigDecimal price) {
         this.name = name;
         this.description = description;
         this.category = category;
-        this.brand = brand;
-        this.price = price;
         this.imageUrl = imageUrl;
-    }
-
-    //Metodos Getter and Setter
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
         this.price = price;
+        this.status = ProductStatus.AVAILABLE;
+        this.postedAt = LocalDateTime.now();
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    //ENUM FOR PRODUCT STATUS
+    enum ProductStatus {
+        AVAILABLE,
+        SOLD
     }
 }
