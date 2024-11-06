@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react"; 
-import { Header } from "../../components/Header";
-import Footer from "../../components/Footer";
+import React, { useState, useEffect } from "react";
 import { ProductFormModal } from "../../components/ProductFormModal";
 
 export const UserPosts = () => {
-  const [posts, setPosts] = useState([]); 
+  const [posts, setPosts] = useState([]);
   const [productModal, setProductModal] = useState(false);
 
   const showModal = () => setProductModal(true);
@@ -13,14 +11,14 @@ export const UserPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/products');
+        const response = await fetch("http://localhost:8080/api/products");
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setPosts(data); 
+        setPosts(data);
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error("Error fetching posts:", error);
       }
     };
 
@@ -29,7 +27,6 @@ export const UserPosts = () => {
 
   return (
     <>
-      <Header />
       <div className="p-5 bg-body-secondary">
         <div className="mb-5 bg-light container border border-light-subtle rounded-4 py-5 shadow">
           <h5>Agrega un nuevo producto a la venta</h5>
@@ -72,7 +69,7 @@ export const UserPosts = () => {
                     className="img-fluid img-responsive rounded product-image"
                     src={post.imageUrl}
                     alt={post.title}
-                    style={{ maxWidth: "80%", height: "auto" }} 
+                    style={{ maxWidth: "80%", height: "auto" }}
                   />
                 </div>
                 <div className="col-md-6 mt-1 d-flex flex-column justify-content-between">
@@ -113,7 +110,6 @@ export const UserPosts = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

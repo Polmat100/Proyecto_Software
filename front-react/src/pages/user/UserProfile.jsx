@@ -1,15 +1,9 @@
 import React from "react";
-import { Header } from "../../components/Header";
-import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
-
-//import "bootstrap/dist/css/bootstrap.min.css";
 
 export const UserProfile = () => {
   return (
     <>
-      <Header></Header>
-
       <main className="container my-4 ">
         <div className="row">
           <div className="col-md-12">
@@ -206,7 +200,6 @@ export const UserProfile = () => {
           </div>
         </div>
       </main>
-      <Footer></Footer>
     </>
   );
 };
