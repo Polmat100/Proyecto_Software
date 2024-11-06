@@ -19,7 +19,7 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "price", nullable = false)
@@ -36,19 +36,15 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "image_url")
-    private String imageUrl;
-
     //CONSTRUCTORS
     public Product() {
         this.postedAt = LocalDateTime.now();
     }
 
-    public Product(String name, String description, Category category, String imageUrl, BigDecimal price) {
+    public Product(String name, String description, Category category, BigDecimal price) {
         this.name = name;
         this.description = description;
         this.category = category;
-        this.imageUrl = imageUrl;
         this.price = price;
         this.status = ProductStatus.AVAILABLE;
         this.postedAt = LocalDateTime.now();

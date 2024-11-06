@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export const Header = () => {
-  //Arrary de categorias temporal
-  const categories = ["Deporte", "Hogar", "Tecnologia", "Estudio", "Moda"];
-  const nombreNegocio = "U-MARKET";
-
+export const Header = ({ categories }) => {
   const [dropDown, setDropDown] = useState(false);
   const changeDropDown = () => {
     setDropDown(!dropDown);
@@ -116,14 +112,13 @@ export const Header = () => {
         </div>
 
         <div className="d-flex justify-content-evenly py-3">
-          {categories.map((category, key) => (
+          {categories.map((category) => (
             <Link
-              to={`/${category}`}
-              key={key}
-              href={category + ".html"}
+              to={`/${category.name}`}
+              key={category.id}
               className="text-light"
             >
-              <div className="box-category px-5 py-1">{category}</div>
+              <div className="box-category px-5 py-1">{category.name}</div>
             </Link>
           ))}
         </div>

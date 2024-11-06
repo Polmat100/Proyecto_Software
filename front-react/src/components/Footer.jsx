@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
+const nombreNegocio = "U-MARKET";
 
-function Footer() {
-  //Array de categorias temporal
-  const categories = ["Deporte", "Hogar", "Tecnologia", "Estudio", "Moda"];
-  const nombreNegocio = "U-MARKET";
+function Footer({ categories }) {
   return (
     <>
       <footer className="bg-footer-custom text-light pt-4">
@@ -27,14 +25,10 @@ function Footer() {
           <div className="text-start">
             <h5>Categorias</h5>
             <ul>
-              {categories.map((category, key) => (
-                <li key={key}>
-                  <Link
-                    to={`/${category}`}
-                    href="#"
-                    className="text-info lh-lg"
-                  >
-                    {category}
+              {categories.map((category) => (
+                <li key={category.id}>
+                  <Link to={`/${category.name}`} className="text-info lh-lg">
+                    {category.name}
                   </Link>
                 </li>
               ))}
