@@ -1,6 +1,11 @@
-package com.umarket.chat-service.Controller;
-import com.umarket.chat-service.Model.Message;
-import com.miapp.service.MessageService;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Controller;
+
+import Model.Message;
+import Service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +30,7 @@ public class MessageController {
 
     @PutMapping("/{id}")
     public void updateMessage(@PathVariable int id, @RequestBody Message message) {
-        message.setMessageId(id);
+        message.setMessage_id(id);
         messageService.updateMessage(message);
     }
 
@@ -34,4 +39,3 @@ public class MessageController {
         messageService.deleteMessage(id);
     }
 }
-

@@ -1,15 +1,20 @@
-package com.umarket.chat-service.Service;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Service;
 
-import com.umarket.chat-service.Model.Chat;
-import com.miapp.repository.ChatRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import Model.Chat;
+import Repository.ChatRepository;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Service
+/**
+ *
+ * @author livia
+ */
 public class ChatService {
-
+    
     @Autowired
     private ChatRepository chatRepository;
 

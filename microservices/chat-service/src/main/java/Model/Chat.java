@@ -1,14 +1,17 @@
-package com.umarket.chat-service.Model;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.Date;
 
-@Entity
+/**
+ *
+ * @author livia
+ */
 public class Chat {
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+
     private int chat_id;
     private int buyer_id;
     private int seller_id;
@@ -76,3 +79,4 @@ public class Chat {
         this.statusChat = statusChat;
     }
 }
+
