@@ -11,13 +11,13 @@ import lombok.Setter;
 public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_id")
+    @Column(name = "image_id") //PRINCIPAL KEY
     private Integer id;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne //Many_to_one relationship. Which means that a product can have multiple images
     @JoinColumn(name = "product_id")
     private Product product;
 }

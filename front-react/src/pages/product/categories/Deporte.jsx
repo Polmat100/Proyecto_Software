@@ -8,22 +8,49 @@ import Accordion from "react-bootstrap/Accordion"; // Bootstrap para los acordeo
 }
 export const Deporte = () => {
   const [productsDeporte, setProductsDeporte] = useState([]);
+  const [productImages, setProductImages] = useState({}); //Almacena las images como un objeto mapeado por ID de producto
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProductsAndImages = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/products");
-        if (!response.ok) {
+        const [responseProducts, responseImages] = await Promise.all([        
+          fetch("http://localhost:8080/api/products"),
+          fetch("http://localhost:8080/api/product_images")
+        ]);
+        
+        if (!responseProducts.ok || !responseImages.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setProductsDeporte(data);
+
+        const dataProducts = await responseProducts.json();
+        const dataImages = await responseImages.json(); 
+
+         // Filtra solo los productos de la categoría "Deporte"
+        const filteredProducts = dataProducts.filter(
+          (product) => product.category && product.category.name=== "Deporte"
+        );
+
+        //setProductsDeporte(dataProducts);
+        setProductsDeporte(filteredProducts);
+        
+        //Mapea las imagenes por ID de producto
+         const imagesByProductId = dataImages.reduce((acc, image) => {
+          const productId = image.product.id; // Asegúrate de que tu API incluye el producto relacionado en cada imagen
+          if (!acc[productId]) {
+            acc[productId] = [];
+          }
+          acc[productId].push(image.imageUrl);
+          return acc;
+        }, {});
+
+        setProductImages(imagesByProductId);        
+
       } catch (error) {
-        console.error("Error fetching sports products:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchProducts();
+    fetchProductsAndImages();
   }, []);
 
   return (
@@ -87,9 +114,10 @@ export const Deporte = () => {
                     className="card shadow mx-2"
                     style={{ overflow: "hidden" }}
                   >
+                    {/* Muestra la primera imagen del producto si esta disponible*/}
                     <div className="bg-image">
                       <img
-                        src={producte.imageUrl}
+                        src={productImages[producte.id]?.[0] || "https://eurelec.pt/img/noimage.jpg"}
                         width="300"
                         height="200"
                         alt={producte.name}
