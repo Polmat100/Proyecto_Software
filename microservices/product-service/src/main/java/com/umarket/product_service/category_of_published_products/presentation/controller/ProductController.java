@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private ProductService productService; //Servicio que busca en la base de datos
 
     @GetMapping
     public List<Product> getAllProducts() {
@@ -32,4 +32,9 @@ public class ProductController {
 
     // delete product
 
+    //
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam("query") String query) {
+        return productService.searchByName(query);
+    }
 }

@@ -3,10 +3,12 @@ package com.umarket.product_service.category_of_published_products.businesslogic
 import com.umarket.product_service.category_of_published_products.businesslogic.models.ProductImage;
 import com.umarket.product_service.category_of_published_products.dataaccess.ProductImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProductImageService {
 
     @Autowired
