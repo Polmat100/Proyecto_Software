@@ -24,15 +24,25 @@ public class ProductController {
         return productService.getProductsByCategory(category);
     }
 
-    // get product by id
+    @PostMapping
+    public Product createProduct(@RequestBody Product product){
+        return productService.createProduct(product);
+    }
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Integer id, @RequestBody Product product){
+        return productService.updateProduct(id,product);
+    }
+    @DeleteMapping("/{id}")
+     public void deleteProduct(@PathVariable Integer id) {
+        productService.deleteProduct(id);
+    }
 
-    // create new product
 
-    // update product
 
-    // delete product
 
-    //
+
+
+
     @GetMapping("/search")
     public List<Product> searchProducts(@RequestParam("query") String query) {
         return productService.searchByName(query);

@@ -4,10 +4,7 @@ import com.umarket.product_service.category_of_published_products.businesslogic.
 import com.umarket.product_service.category_of_published_products.businesslogic.services.ProductImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
@@ -29,5 +26,17 @@ public class ProductImageController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping
+    public ResponseEntity<ProductImage> addImage(@RequestBody ProductImage image){
+        ProductImage saveImage = productImageService.addImage(image);
+        return ResponseEntity.ok(saveImage);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteImageById(@PathVariable Integer id) {
+        productImageService.deleteImageById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

@@ -21,5 +21,12 @@ public class ProductImageService {
     public Optional<ProductImage> getImageById(Integer id){
         return productImageRepository.findById(id);
     }
+
+    public ProductImage addImage(ProductImage image){
+        return productImageRepository.save(image);
+    }
+    public void deleteImageById(Integer id){
+        productImageRepository.deleteById(id);
+    }
 }
 
