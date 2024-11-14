@@ -32,6 +32,31 @@ public class ProductService {
         //Busca productos que contengan la consulta de forma insensible a mayúsculas/minúsculas
         return  productRepository.findByNameContainingIgnoreCase(query);
     }
+    //Agregar productos
+    public Product createProduct(Product product){
+        return productRepository.save(product);
+    }
+    public Product updateProduct(Integer id, Product updateProduct){
+        return productRepository.findById(id).map(
+                existingProduct  -> {
+                    existingProduct.setName(updateProduct.getName());
+                    existingProduct.setDescription(updateProduct.getDescription());
+                    existingProduct.setPrice(updateProduct.getPrice());
+                    existingProduct.setStatus(updateProduct.getStatus());
+                    existingProduct.setCategory(updateProduct.getCategory());
+                    return productRepository.save(existingProduct);
+                }).orElseThrow(()  -> new RuntimeException("Product not found with id " + id) );
+    }
+
+    public void deleteProduct(Integer id){
+        if(productRepository.existsById(id)){
+            productRepository.deleteById(id);
+        }else {
+            throw new RuntimeException("Product not found whit id : "+ id);
+        }
+    }
+
+
 }
 
 
