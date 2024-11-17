@@ -32,9 +32,9 @@ public class ProductController {
 
     // delete product
 
-    //
+    // Buscar productos nombre
     @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam("query") String query) {
-        return productService.searchByName(query);
+    public List<Product> searchProducts(@RequestParam String name) {
+        return productService.searchByName(name);
     }
 }

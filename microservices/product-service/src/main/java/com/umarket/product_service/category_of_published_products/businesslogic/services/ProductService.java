@@ -28,9 +28,9 @@ public class ProductService {
         return category.map(productRepository::findByCategory).orElseGet(List::of);
     }
 
-    public List<Product> searchByName(String query){
+    public List<Product> searchByName(String name){
         //Busca productos que contengan la consulta de forma insensible a mayúsculas/minúsculas
-        return  productRepository.findByNameContainingIgnoreCase(query);
+        return  productRepository.findByNameContainingIgnoreCase(name);
     }
 }
 
