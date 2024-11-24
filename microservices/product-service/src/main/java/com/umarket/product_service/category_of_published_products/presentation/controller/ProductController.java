@@ -33,18 +33,27 @@ public class ProductController {
         return productService.updateProduct(id,product);
     }
     @DeleteMapping("/{id}")
-     public void deleteProduct(@PathVariable Integer id) {
+    public void deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
     }
 
 
-
-
-
-
-
+    /*@GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam String name) {
+        return productService.searchProductsByName(name);
+    }*/
     @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam("query") String query) {
-        return productService.searchByName(query);
+    public List<Product> searchProducts(@RequestParam(required = false) String name, @RequestParam(required = false) String category) {
+        if (name != null && category != null) {
+            return productService.searchByNameAndCategory(name, category);
+        } else if (name != null) {
+            return productService.searchProductsByName(name);
+        } else if (category != null) {
+            return productService.getProductsByCategory(category);
+        } else {
+            return productService.getAllProducts();
+        }
     }
+
+
 }

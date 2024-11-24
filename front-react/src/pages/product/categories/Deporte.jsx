@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // Usaremos íconos para las flechas
+//import { Link } from "react-router-dom";
+//import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // Usaremos íconos para las flechas
 import Accordion from "react-bootstrap/Accordion"; // Bootstrap para los acordeones
+import { useLocation } from "react-router-dom";
 
 {
   /*Declaración del componente Deporte*/
@@ -9,6 +10,7 @@ import Accordion from "react-bootstrap/Accordion"; // Bootstrap para los acordeo
 export const Deporte = () => {
   const [productsDeporte, setProductsDeporte] = useState([]);
   const [productImages, setProductImages] = useState({}); //Almacena las images como un objeto mapeado por ID de producto
+
 
   useEffect(() => {
     const fetchProductsAndImages = async () => {
@@ -52,6 +54,11 @@ export const Deporte = () => {
 
     fetchProductsAndImages();
   }, []);
+
+   // Mostrar producto seleccionado o todos los productos
+   //const displayedProducts = selectedProduct
+   //? [selectedProduct]
+   //: productsDeporte;
 
   return (
     <>

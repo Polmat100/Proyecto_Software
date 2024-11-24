@@ -17,6 +17,8 @@ import { Moda } from "./pages/product/categories/Moda";
 import { Header } from "./components/Header";
 import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
+import { Filterproductbysearchbar } from "./pages/product/Filterproductbysearchbar";
+
 
 const URLCATEGORIES = "http://localhost:8080/api/categories";
 
@@ -51,6 +53,7 @@ export const App = () => {
           <Route path="/Tecnologia" element={<Tecnologia />}></Route>
           <Route path="/Estudio" element={<Estudio />}></Route>
           <Route path="/Moda" element={<Moda />}></Route>
+          <Route path="/Filterproductbysearchbar/:id" element={<Filterproductbysearchbar />} />
         </Routes>
 
         <Footer categories={categories} />

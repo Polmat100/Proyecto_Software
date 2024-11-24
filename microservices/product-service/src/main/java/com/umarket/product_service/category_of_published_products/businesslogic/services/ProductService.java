@@ -23,19 +23,35 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> getProductsByCategory(String categoryName) {
-        Optional<Category> category=categoryRepository.findByName(categoryName);
-        return category.map(productRepository::findByCategory).orElseGet(List::of);
+    public List<Product> searchProductsByName(String name){
+        //Busca productos que contengan la consulta de forma insensible a mayúsculas/minúsculas
+        return  productRepository.findByNameContainingIgnoreCase(name);
     }
 
-    public List<Product> searchByName(String query){
-        //Busca productos que contengan la consulta de forma insensible a mayúsculas/minúsculas
-        return  productRepository.findByNameContainingIgnoreCase(query);
+    public List<Product> getProductsByCategory(String categoryName) {
+        Optional<Category> category=categoryRepository.findByName(categoryName);
+        /*if (category.isEmpty()) {
+            throw new RuntimeException("Category not found with name: " + categoryName);
+        }*/
+        return category.map(productRepository::findByCategory).orElseGet(List::of);
+        //return productRepository.findByCategory(category.get());
     }
+
+    public List<Product> searchByNameAndCategory(String name, String categoryName) {
+        Optional<Category> category = categoryRepository.findByName(categoryName);
+        if (category.isPresent()) {
+            return productRepository.findByNameContainingIgnoreCaseAndCategory(name, category.get());
+        } else {
+            return List.of(); // Retorna una lista vacía si la categoría no existe
+        }
+    }
+
     //Agregar productos
     public Product createProduct(Product product){
         return productRepository.save(product);
     }
+
+    //Editar productos
     public Product updateProduct(Integer id, Product updateProduct){
         return productRepository.findById(id).map(
                 existingProduct  -> {
@@ -48,6 +64,7 @@ public class ProductService {
                 }).orElseThrow(()  -> new RuntimeException("Product not found with id " + id) );
     }
 
+    //Eliminar Productos
     public void deleteProduct(Integer id){
         if(productRepository.existsById(id)){
             productRepository.deleteById(id);
