@@ -15,7 +15,7 @@ Este proyecto es una **plataforma de comercio electrónico** que permite a los u
 ### Backend
 
 - **Java**
-- **Spring Boot**
+- **Spring Boot + Dependencias**
 - **MySQL**
 
 ### Frontend
@@ -24,6 +24,9 @@ Este proyecto es una **plataforma de comercio electrónico** que permite a los u
 - **React.js**
 - **Fetch**
 - **Bootstrap**
+
+### Docker
+- Para lanzar todos los servicios en distintos contenedores
 _______________________________________________________________________
 
 ## Configuracion para correr el proyecto

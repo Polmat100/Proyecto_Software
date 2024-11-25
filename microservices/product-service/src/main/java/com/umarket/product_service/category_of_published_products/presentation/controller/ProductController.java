@@ -1,9 +1,8 @@
 package com.umarket.product_service.category_of_published_products.presentation.controller;
 
 import com.umarket.product_service.category_of_published_products.businesslogic.models.Product;
-import com.umarket.product_service.category_of_published_products.dataaccess.ProductRepository;
+import com.umarket.product_service.category_of_published_products.businesslogic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,55 +12,48 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService; //Servicio que busca en la base de datos
 
-    // Obtener todos los productos
     @GetMapping
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productService.getAllProducts();
     }
 
-    // Obtener productos de la categoría 'Deportes'
-    @GetMapping("/deporte")
-    public List<Product> getSportsProducts() {
-        return productRepository.findByCategory("Deportes");
+    @GetMapping("/category/{category}")
+    public List<Product> getProductsByCategory(@PathVariable String category) {
+        return productService.getProductsByCategory(category);
     }
 
-    // Obtener un producto por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return productRepository.findById(id)
-                .map(product -> ResponseEntity.ok().body(product))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Crear un nuevo producto
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    public Product createProduct(@RequestBody Product product){
+        return productService.createProduct(product);
     }
-
-    // Actualizar un producto
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        return productRepository.findById(id).map(product -> {
-            product.setName(productDetails.getName());
-            product.setDescription(productDetails.getDescription());
-            product.setCategory(productDetails.getCategory());
-            product.setBrand(productDetails.getBrand());
-            product.setPrice(productDetails.getPrice());
-            product.setImageUrl(productDetails.getImageUrl());
-            Product updatedProduct = productRepository.save(product);
-            return ResponseEntity.ok(updatedProduct);
-        }).orElse(ResponseEntity.notFound().build());
+    public Product updateProduct(@PathVariable Integer id, @RequestBody Product product){
+        return productService.updateProduct(id,product);
+    }
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Integer id) {
+        productService.deleteProduct(id);
     }
 
-    // Eliminar un producto
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-        return productRepository.findById(id).map(product -> {
-            productRepository.delete(product);
-            return ResponseEntity.ok().build();
-        }).orElse(ResponseEntity.notFound().build());
+
+    /*@GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam String name) {
+        return productService.searchProductsByName(name);
+    }*/
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam(required = false) String name, @RequestParam(required = false) String category) {
+        if (name != null && category != null) {
+            return productService.searchByNameAndCategory(name, category);
+        } else if (name != null) {
+            return productService.searchProductsByName(name);
+        } else if (category != null) {
+            return productService.getProductsByCategory(category);
+        } else {
+            return productService.getAllProducts();
+        }
     }
+
+
 }

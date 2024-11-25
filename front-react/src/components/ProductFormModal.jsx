@@ -1,53 +1,84 @@
+import React, { useState } from 'react';
+
 export const ProductFormModal = (props) => {
   const { closeModal } = props;
 
+
+  const [product, setProduct] = useState({
+    title: '',
+    description: '',
+    category: '',
+    price: '',
+    condition: '',
+    imageUrl: ''
+  });
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProduct({
+      ...product,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log('Producto a enviar:', product);
+    closeModal();
+  };
+
   return (
     <>
-      <div
-        className="modal fade show"
-        tabIndex="-1"
-        style={{ display: "block" }}
-      >
-        <div className="modal-dialog ">
+      <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>
+        <div className="modal-dialog">
           <div className="modal-content bg-body-secondary">
-            <div className="modal-header px-4 text-bg-dark ">
+            <div className="modal-header px-4 text-bg-dark">
               <h5 className="modal-title">PUBLICA UN NUEVO PRODUCTO</h5>
-              <button
-                type="button"
-                className="btn-close bg-white"
-                onClick={closeModal}
-              ></button>
+              <button type="button" className="btn-close bg-white" onClick={closeModal}></button>
             </div>
-            <form className="">
+            <form onSubmit={handleSubmit}>
               <div className="modal-body">
                 <div className="row d-flex justify-content-center align-items-center">
                   <div className="card-body px-4 text-black">
                     <div className="mb-4">
                       <h6 className="text-start">TITULO:</h6>
-                      <input type="text" className="form-control" required />
-                      <div className="valid-feedback">Looks good!</div>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="title"
+                        value={product.title}
+                        onChange={handleInputChange}
+                        required
+                      />
                     </div>
                     <div className="mb-4">
                       <h6 className="text-start">DESCRIPCION:</h6>
                       <textarea
                         className="form-control"
-                        id="floatingTextarea2"
+                        name="description"
+                        value={product.description}
+                        onChange={handleInputChange}
                         required
                       ></textarea>
-                      <div className="form-text">
-                        Ingrese una descripcion corta para tu publicacion
-                      </div>
                     </div>
                     <div className="row mb-4">
                       <div className="col">
                         <div className="mb-4">
                           <h6 className="text-start">CATEGORIA:</h6>
-                          <select name="" id="" className="form-select">
-                            <option value="">Tecnologia</option>
-                            <option value="">Hogar</option>
-                            <option value="">Moda</option>
-                            <option value="">Deportes</option>
-                            <option value="">Estudio</option>
+                          <select
+                            className="form-select"
+                            name="category"
+                            value={product.category}
+                            onChange={handleInputChange}
+                            required
+                          >
+                            <option value="Tecnologia">Tecnología</option>
+                            <option value="Hogar">Hogar</option>
+                            <option value="Moda">Moda</option>
+                            <option value="Deportes">Deportes</option>
+                            <option value="Estudio">Estudio</option>
                           </select>
                         </div>
                       </div>
@@ -58,10 +89,13 @@ export const ProductFormModal = (props) => {
                           <input
                             type="number"
                             className="form-control"
+                            name="price"
+                            value={product.price}
+                            onChange={handleInputChange}
                             required
                           />
                         </div>
-                      </div>          
+                      </div>
                     </div>
                     <div className="mb-4">
                       <h6 className="text-start">ESTADO:</h6>
@@ -69,9 +103,11 @@ export const ProductFormModal = (props) => {
                         <input
                           className="form-check-input"
                           type="radio"
-                          name="state"
+                          name="condition"
                           id="nuevo"
-                          value=""
+                          value="Nuevo"
+                          checked={product.condition === 'Nuevo'}
+                          onChange={handleInputChange}
                           required
                         />
                         <label className="form-check-label" htmlFor="nuevo">
@@ -82,9 +118,11 @@ export const ProductFormModal = (props) => {
                         <input
                           className="form-check-input"
                           type="radio"
-                          name="state"
+                          name="condition"
                           id="seminuevo"
-                          value=""
+                          value="Semi-Nuevo"
+                          checked={product.condition === 'Semi-Nuevo'}
+                          onChange={handleInputChange}
                           required
                         />
                         <label className="form-check-label" htmlFor="seminuevo">
@@ -95,15 +133,14 @@ export const ProductFormModal = (props) => {
                         <input
                           className="form-check-input"
                           type="radio"
-                          name="state"
+                          name="condition"
                           id="buenestado"
-                          value=""
+                          value="Buen Estado"
+                          checked={product.condition === 'Buen Estado'}
+                          onChange={handleInputChange}
                           required
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="buenestado"
-                        >
+                        <label className="form-check-label" htmlFor="buenestado">
                           Buen Estado
                         </label>
                       </div>
@@ -111,18 +148,19 @@ export const ProductFormModal = (props) => {
 
                     <div className="mb-4">
                       <h6 className="text-start">SUBIR FOTO:</h6>
-                      <input type="file" className="form-control" required />
+                      <input
+                        type="file"
+                        className="form-control"
+                        name="imageUrl"
+                        onChange={handleInputChange}
+                        required
+                      />
                     </div>
                   </div>
                 </div>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-bs-dismiss="modal"
-                  onClick={closeModal}
-                >
+                <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={closeModal}>
                   Cerrar
                 </button>
                 <button type="submit" className="btn btn-success">
