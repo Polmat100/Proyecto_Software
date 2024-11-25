@@ -1,176 +1,251 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
-export const ProductFormModal = (props) => {
-  const { closeModal } = props;
-
-
-  const [product, setProduct] = useState({
-    title: '',
-    description: '',
-    category: '',
-    price: '',
-    condition: '',
-    imageUrl: ''
+export const ProductFormModal = ({ closeModal, product }) => {
+  const [formProduct, setFormProduct] = useState({
+    id: null,
+    title: "",
+    description: "",
+    category: "",
+    price: "",
+    imageUrls: [""], 
   });
 
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const isEditing = !!product;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/categories");
+        if (!response.ok) throw new Error("Error al cargar categorías");
+        const data = await response.json();
+        setCategories(data);
+      } catch (err) {
+        setError("No se pudieron cargar las categorías");
+      }
+    };
+    fetchCategories();
+
+
+    if (isEditing) {
+      setFormProduct({
+        id: product.id,
+        title: product.name || "",
+        description: product.description || "",
+        category: product.category?.id || "",
+        price: product.price || "",
+        imageUrls: product.images?.map((img) => img.imageUrl) || [""], // Garantizamos que sea un array
+      });
+    } else {
+    
+      setFormProduct({
+        id: null,
+        title: "",
+        description: "",
+        category: "",
+        price: "",
+        imageUrls: [""],
+      });
+    }
+  }, [product, isEditing]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProduct({
-      ...product,
-      [name]: value
-    });
+    setFormProduct((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleImageUrlChange = (index, value) => {
+    const updatedImageUrls = [...formProduct.imageUrls];
+    updatedImageUrls[index] = value;
+    setFormProduct((prev) => ({ ...prev, imageUrls: updatedImageUrls }));
+  };
 
-    console.log('Producto a enviar:', product);
-    closeModal();
+  const addImageUrlField = () => {
+    setFormProduct((prev) => ({
+      ...prev,
+      imageUrls: [...prev.imageUrls, ""],
+    }));
+  };
+
+  const removeImageUrlField = (index) => {
+    const updatedImageUrls = formProduct.imageUrls.filter((_, i) => i !== index);
+    setFormProduct((prev) => ({ ...prev, imageUrls: updatedImageUrls }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      
+      const productData = {
+        name: formProduct.title,
+        description: formProduct.description,
+        category: { id: parseInt(formProduct.category, 10) }, 
+        price: parseFloat(formProduct.price), 
+      };
+
+      const productResponse = await fetch(
+        isEditing
+          ? `http://localhost:8080/api/products/${formProduct.id}`
+          : "http://localhost:8080/api/products",
+        {
+          method: isEditing ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(productData),
+        }
+      );
+
+      if (!productResponse.ok) {
+        const errorData = await productResponse.json();
+        throw new Error(errorData.message || "Error al registrar el producto");
+      }
+
+      const createdProduct = await productResponse.json();
+      const productId = createdProduct.id;
+
+
+      const imageRequests = formProduct.imageUrls.map((url) =>
+        fetch("http://localhost:8080/api/product_images", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            imageUrl: url,
+            product: { id: productId }, 
+          }),
+        })
+      );
+
+      const imageResponses = await Promise.all(imageRequests);
+      if (imageResponses.some((res) => !res.ok)) {
+        throw new Error("Error al registrar una o más imágenes");
+      }
+
+      closeModal(); 
+    } catch (err) {
+      setError(err.message || "Hubo un problema al enviar los datos");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>
-        <div className="modal-dialog">
-          <div className="modal-content bg-body-secondary">
-            <div className="modal-header px-4 text-bg-dark">
-              <h5 className="modal-title">PUBLICA UN NUEVO PRODUCTO</h5>
-              <button type="button" className="btn-close bg-white" onClick={closeModal}></button>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="modal-body">
-                <div className="row d-flex justify-content-center align-items-center">
-                  <div className="card-body px-4 text-black">
-                    <div className="mb-4">
-                      <h6 className="text-start">TITULO:</h6>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="title"
-                        value={product.title}
+    <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>
+      <div className="modal-dialog">
+        <div className="modal-content bg-body-secondary">
+          <div className="modal-header px-4 text-bg-dark">
+            <h5 className="modal-title">
+              {isEditing ? "EDITAR PRODUCTO" : "PUBLICA UN NUEVO PRODUCTO"}
+            </h5>
+            <button
+              type="button"
+              className="btn-close bg-white"
+              onClick={closeModal}
+            ></button>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="modal-body">
+              {error && <p className="text-danger">{error}</p>}
+              <div className="row d-flex justify-content-center align-items-center">
+                <div className="card-body px-4 text-black">
+                  <div className="mb-4">
+                    <h6 className="text-start">TITULO:</h6>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="title"
+                      value={formProduct.title}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <h6 className="text-start">DESCRIPCION:</h6>
+                    <textarea
+                      className="form-control"
+                      name="description"
+                      value={formProduct.description}
+                      onChange={handleInputChange}
+                      required
+                    ></textarea>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col">
+                      <h6 className="text-start">CATEGORIA:</h6>
+                      <select
+                        className="form-select"
+                        name="category"
+                        value={formProduct.category}
                         onChange={handleInputChange}
                         required
-                      />
+                      >
+                        <option value="">Seleccione...</option>
+                        {categories.map((cat) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <div className="mb-4">
-                      <h6 className="text-start">DESCRIPCION:</h6>
-                      <textarea
-                        className="form-control"
-                        name="description"
-                        value={product.description}
-                        onChange={handleInputChange}
-                        required
-                      ></textarea>
-                    </div>
-                    <div className="row mb-4">
-                      <div className="col">
-                        <div className="mb-4">
-                          <h6 className="text-start">CATEGORIA:</h6>
-                          <select
-                            className="form-select"
-                            name="category"
-                            value={product.category}
-                            onChange={handleInputChange}
-                            required
-                          >
-                            <option value="Tecnologia">Tecnología</option>
-                            <option value="Hogar">Hogar</option>
-                            <option value="Moda">Moda</option>
-                            <option value="Deportes">Deportes</option>
-                            <option value="Estudio">Estudio</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col">
-                        <h6 className="text-start">PRECIO:</h6>
-                        <div className="input-group mb-4">
-                          <span className="input-group-text">S/.</span>
-                          <input
-                            type="number"
-                            className="form-control"
-                            name="price"
-                            value={product.price}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <h6 className="text-start">ESTADO:</h6>
-                      <div className="form-check form-check-inline mx-3">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="nuevo"
-                          value="Nuevo"
-                          checked={product.condition === 'Nuevo'}
-                          onChange={handleInputChange}
-                          required
-                        />
-                        <label className="form-check-label" htmlFor="nuevo">
-                          Nuevo
-                        </label>
-                      </div>
-                      <div className="form-check form-check-inline mx-3">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="seminuevo"
-                          value="Semi-Nuevo"
-                          checked={product.condition === 'Semi-Nuevo'}
-                          onChange={handleInputChange}
-                          required
-                        />
-                        <label className="form-check-label" htmlFor="seminuevo">
-                          Semi-Nuevo
-                        </label>
-                      </div>
-                      <div className="form-check form-check-inline mx-3">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="buenestado"
-                          value="Buen Estado"
-                          checked={product.condition === 'Buen Estado'}
-                          onChange={handleInputChange}
-                          required
-                        />
-                        <label className="form-check-label" htmlFor="buenestado">
-                          Buen Estado
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="mb-4">
-                      <h6 className="text-start">SUBIR FOTO:</h6>
+                    <div className="col">
+                      <h6 className="text-start">PRECIO:</h6>
                       <input
-                        type="file"
+                        type="number"
                         className="form-control"
-                        name="imageUrl"
+                        name="price"
+                        value={formProduct.price}
                         onChange={handleInputChange}
                         required
                       />
                     </div>
                   </div>
+                  <div className="mb-4">
+                    <h6 className="text-start">URLS DE IMAGENES:</h6>
+                    {Array.isArray(formProduct.imageUrls) &&
+                      formProduct.imageUrls.map((url, index) => (
+                        <div key={index} className="mb-2 d-flex">
+                          <input
+                            type="text"
+                            className="form-control me-2"
+                            value={url}
+                            onChange={(e) => handleImageUrlChange(index, e.target.value)}
+                            required
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={() => removeImageUrlField(index)}
+                          >
+                            -
+                          </button>
+                        </div>
+                      ))}
+                    <button
+                      type="button"
+                      className="btn btn-primary mt-2"
+                      onClick={addImageUrlField}
+                    >
+                      + Agregar URL
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={closeModal}>
-                  Cerrar
-                </button>
-                <button type="submit" className="btn btn-success">
-                  PUBLICAR PRODUCTO
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-danger" onClick={closeModal}>
+                Cerrar
+              </button>
+              <button type="submit" className="btn btn-success" disabled={loading}>
+                {loading ? "Guardando..." : "Guardar"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
