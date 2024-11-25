@@ -1,4 +1,4 @@
-package chat_Service.chat_service;
+package com.umarket.chat_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
