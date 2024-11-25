@@ -1,39 +1,115 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/Header";
 import Footer from "../../components/Footer";
-import "./StyleChat.css";
-import { io } from 'socket.io-client';
-const socket=io.connect('http://localhost:3001');
 
+import "./StyleChat.css";
+
+let stompClient = null;
 
 export const UserImbox = () => {
-  const [username,setUsername] = useState('')
-  const [room,setRoom] = useState('')
-  const joinRoom=()=>
-  {
-    if(username!='' && room!=''){
-      socket.emit('join_room',room)
-    }
-  }
+  const [publicChats, setPublicChats] = useState([]); // Para mensajes públicos
+  const [privateChats, setPrivateChats] = useState(new Map()); // Para mensajes privados
+  const [userData, setUserData] = useState({
+    username: "",
+    recievername: "",
+    connected: false,
+    message: "",
+  });
 
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [selectedUser, setSelectedUser] = useState("Jose Manuel Garces");
-  const [isConnected, setIsConnected]=useState();
-  useEffect(()=>{
-    socket.on('connect',()=>setIsConnected(true));
-  },[]);
-  const handleSendMessage = () => {
-    if (newMessage.trim() !== "") {
-      setMessages([...messages, newMessage]);
-      setNewMessage("");
+  // Maneja cambios en el input del nombre de usuario
+  const handleUserName = (event) => {
+    setUserData({ ...userData, username: event.target.value });
+  };
+
+  // Función para registrar y conectar al usuario
+  const registerUser = () => {
+    const socket = new WebSocket("ws://localhost:8080/ws");
+    
+    socket.onopen = () => {
+      stompClient = socket;
+      onConnected();
+    };
+
+    socket.onerror = (err) => {
+      onError(err);
+    };
+    
+    socket.onmessage = (message) => {
+      const payloadData = JSON.parse(message.data);
+      if (payloadData.status === "MESSAGE") {
+        onPublicMessageReceived(message);
+      } else if (payloadData.status === "PRIVATE") {
+        onPrivateMessageReceived(message);
+      }
+    };
+  };
+
+  // Cuando la conexión es exitosa
+  const onConnected = () => {
+    setUserData({ ...userData, connected: true });
+    // Suscribirse a los mensajes públicos y privados
+    stompClient.send("/chatroom/public");
+    stompClient.send(`/user/${userData.username}/private`);
+  };
+
+  // Manejo de errores de conexión
+  const onError = (err) => {
+    console.error("Error de conexión:", err);
+  };
+
+  // Maneja los mensajes públicos recibidos
+  const onPublicMessageReceived = (message) => {
+    const payloadData = JSON.parse(message.data);
+    switch (payloadData.status) {
+      case "JOIN":
+        if (!privateChats.get(payloadData.senderName)) {
+          privateChats.set(payloadData.senderName, []);
+          setPrivateChats(new Map(privateChats));
+        }
+        break;
+      case "MESSAGE":
+        setPublicChats((prevChats) => [...prevChats, payloadData]);
+        break;
+      default:
+        break;
     }
   };
 
+  // Maneja los mensajes privados recibidos
+  const onPrivateMessageReceived = (message) => {
+    const payloadData = JSON.parse(message.data);
+    if (privateChats.get(payloadData.senderName)) {
+      privateChats.get(payloadData.senderName).push(payloadData);
+      setPrivateChats(new Map(privateChats));
+    } else {
+      let list = [];
+      list.push(payloadData);
+      privateChats.set(payloadData.senderName, list);
+      setPrivateChats(new Map(privateChats));
+    }
+  };
+
+  // Maneja los cambios en el input del mensaje
+  const handleMessage = (event) => {
+    setUserData({ ...userData, message: event.target.value });
+  };
+
+  // Enviar mensaje público
+  const sendMessage = () => {
+    if (stompClient && userData.message.trim() !== "") {
+      const message = {
+        senderName: userData.username,
+        message: userData.message,
+        status: "MESSAGE",
+      };
+      stompClient.send("/app/message", {}, JSON.stringify(message));
+      setUserData({ ...userData, message: "" });
+    }
+  };
 
   return (
     <>
-      <Header></Header>
+      <Header />
       <div className="container chat-container">
         <div className="row">
           <div className="col-md-4">
@@ -45,55 +121,38 @@ export const UserImbox = () => {
                   alt="User"
                   className="user-logo"
                 />
-                <span>Jose Manuel Garces</span>
-              </div>
-              <div className="user-item">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png"
-                  alt="User"
-                  className="user-logo"
-                />
-                <span>Lucas Benavides</span>
-              </div>
-              <div className="user-item">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png"
-                  alt="User"
-                  className="user-logo"
-                />
-                <span>Carlos Mauricio</span>
+                <span>Diegogo</span>
               </div>
             </div>
           </div>
           <div className="col-md-8 chat-box">
             <h5>Chat</h5>
-            <h6 className="text-start text-secondary">{isConnected ? 'Conectado': 'Desconectado'}</h6>
+            <h6 className="text-start text-secondary">
+            
+            </h6>
             <div className="chat-messages">
-              {messages.map((message, index) => (
-                <div key={index} className="message-item">
-                  <span>{message}</span>
+              
+                <div key="" className="message-item">
+                  <span>Hola!!</span>
                 </div>
-              ))}
+              
             </div>
             <div className="chat-input">
               <input
                 type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
+                value=""
+                
                 placeholder="Escribe un mensaje..."
                 className="form-control"
               />
-              <button
-                className="btn btn-primary"
-                onClick={handleSendMessage}
-              >
+              <button className="btn btn-primary">
                 Enviar
               </button>
             </div>
           </div>
         </div>
       </div>
-      <Footer></Footer>
+      <Footer />
     </>
   );
 };
