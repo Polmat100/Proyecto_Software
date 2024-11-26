@@ -10,23 +10,23 @@ export const UserImbox = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('Unknown');
-  const [connected, setConnected] = useState(false); 
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
     const client = new Client({
-      brokerURL: 'ws://localhost:8080/websocket', 
+      brokerURL: 'ws://localhost:8089/websocket',
       onConnect: () => {
         console.log('Conexión WebSocket establecida');
         setConnected(true);
         client.subscribe('/tema/messages', (message) => {
-          console.log('Mensaje recibido:', message); 
+          console.log('Mensaje recibido:', message);
           const newMessage = JSON.parse(message.body);
           setMessages((prevMessages) => [...prevMessages, newMessage]);
         });
       },
       onError: (error) => {
         console.error('Error en STOMP:', error);
-        setConnected(false); 
+        setConnected(false);
       }
     });
 
@@ -40,7 +40,7 @@ export const UserImbox = () => {
   const sendMessage = () => {
     if (stompClient && name && message) {
       stompClient.publish({
-        destination: '/app/send', 
+        destination: '/app/send',
         body: JSON.stringify({
           name,
           content: message
@@ -54,7 +54,6 @@ export const UserImbox = () => {
 
   return (
     <>
-      <Header />
       <div className="container chat-container">
         <div className="row">
           <div className="col-md-4">
@@ -76,10 +75,15 @@ export const UserImbox = () => {
 
             </h6>
             <div className="chat-messages">
-
-              {messages.map((msg, i) => (
-                <div key={i} className="message-item">
-                  <span><b>{msg.name}</b>: {msg.content}</span>
+              {(messages || []).map((msg, i) => (
+                <div
+                  key={i}
+                  className={`message-item ${msg.name === name ? 'message-sent' : 'message-received'
+                    }`}
+                >
+                  <span>
+                    <b>{msg.name}</b>: {msg.content}
+                  </span>
                 </div>
               ))}
             </div>
@@ -107,7 +111,6 @@ export const UserImbox = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

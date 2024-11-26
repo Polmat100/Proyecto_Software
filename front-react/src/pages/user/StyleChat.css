@@ -37,7 +37,7 @@
 .user-item {
   padding: 10px;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;  
+  border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
 }
@@ -54,6 +54,46 @@
 
 
 .active-user {
-  background-color: #e0f7fa;  
+  background-color: #e0f7fa;
   font-weight: bold;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.message-item {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 5px 0;
+}
+
+.message-sent {
+  align-self: flex-end;
+  background-color: #d1e7dd;
+  color: #0f5132;
+  text-align: right;
+}
+
+.message-received {
+  align-self: flex-start;
+  background-color: #f8d7da;
+  color: #842029;
+  text-align: left;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.chat-input input {
+  flex: 1;
 }
