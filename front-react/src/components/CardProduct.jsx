@@ -14,7 +14,11 @@ export const CardProduct = ({ product }) => {
             />
           </div>
           <div className="card-body">
-            <Link to={`/ProductDetails/${product.id}`} className="text-reset">
+            <Link
+              to={`/ProductDetails`}
+              state={{ product }}
+              className="text-reset"
+            >
               <h5 className="card-title mb-3">{product.name}</h5>
             </Link>
             <hr />
@@ -24,7 +28,8 @@ export const CardProduct = ({ product }) => {
             <h6>Precio: S/.{product.price}</h6>
           </div>
           <Link
-            to={`/ProductDetails/${product.id}`}
+            to={`/ProductDetails`}
+            state={{ product }}
             className="text-light py-3 btn-details"
           >
             <strong>VER DETALLES</strong>

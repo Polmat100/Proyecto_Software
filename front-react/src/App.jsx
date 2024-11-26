@@ -52,10 +52,6 @@ export const App = () => {
           <Route path="/Tecnología" element={<Tecnologia />}></Route>
           <Route path="/Estudio" element={<Estudio />}></Route>
           <Route path="/Moda" element={<Moda />}></Route>
-          <Route
-            path="/Filterproductbysearchbar/:id"
-            element={<Filterproductbysearchbar />}
-          />
         </Routes>
 
         <Footer categories={categories} />
