@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import "./ImgStyle.css";
 
-export const ProductDetails = () => {
+export const ProductDetails = ({ products }) => {
   const [mainImage, setMainImage] = useState(
     "https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/12.webp"
   );
@@ -11,17 +11,20 @@ export const ProductDetails = () => {
     setMainImage(imageSrc);
   };
 
+  const { id } = useParams();
+  const product = products.find((p) => p.id === parseInt(id));
+
+  console.log(product);
+
   return (
     <>
       <div className="m-5">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="#">Hogar</a>
+              <Link>product.</Link>
             </li>
-            <li className="breadcrumb-item">
-              <a href="#">Tecnologia</a>
-            </li>
+
             <li className="breadcrumb-item active" aria-current="page">
               Product 1
             </li>
