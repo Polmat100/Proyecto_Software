@@ -1,47 +1,51 @@
 import "./Autocomplete.css";
 import { useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Header = ({ categories }) => {
   const [dropDown, setDropDown] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate(); //Instanciar useNavigate
-  
+
   const changeDropDown = () => {
     setDropDown(!dropDown);
   };
 
-  const handleSearch = async () =>{
+  const handleSearch = async () => {
     if (query.length > 1) {
-        try {
-          const response = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(query)}`);
-          if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-          }
-          const data = await response.json();
-          setResults(data);
-        } catch (error) {
-          console.error('Error al buscar productos:', error);
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/products/search?name=${encodeURIComponent(
+            query
+          )}`
+        );
+        if (!response.ok) {
+          throw new Error("Error en la respuesta del servidor");
         }
-      } else {
-        setResults([]); // Limpiar resultados si la longitud es menor a 3
+        const data = await response.json();
+        setResults(data);
+      } catch (error) {
+        console.error("Error al buscar productos:", error);
       }
-    };  
+    } else {
+      setResults([]); // Limpiar resultados si la longitud es menor a 3
+    }
+  };
 
-    const handleSelectResult = (product) => {
-      setQuery(product.name); // Muestra el producto seleccionado en el campo de búsqueda
-      setResults([]); // Limpia la lista de resultados después de seleccionar  
-      
-      // Verifica que product.category y product.category.id existan
-      if (product.id) {
-        // Redirigir a la página de la categoría, pasando el ID de la categoría
-        //navigate(`/category/${product.category.id}`, { state: { categoryName: product.category.name } });
-        navigate(`/Filterproductbysearchbar/${product.id}`, { state: { product } });
-      } else {
-        console.error('El producto seleccionado no tiene una ID válida.');
-      }
-    }; 
+  const handleSelectResult = async (product) => {
+    setQuery(product.name); // Show the product selected
+    setResults([]); // Clean the result's list after select
+
+    try {
+      const response = await fetch("http://localhost:8080/api/products");
+      const data = await response.json();
+      const productFinded = data.find((p) => p.id === product.id);
+      navigate(`/ProductDetails`, { state: { product: productFinded } });
+    } catch (error) {
+      console.log("Error: " + error);
+    }
+  };
 
   return (
     <>
@@ -59,20 +63,20 @@ export const Header = ({ categories }) => {
               <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h12V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5m2 .5a.5.5 0 0 1 .5.5V13h8V9.5a.5.5 0 0 1 1 0V13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a.5.5 0 0 1 .5-.5" />
             </svg>
           </Link>
-          {/* Input de busqueda añadido */}   
-          <div className="search-autocomplete">            
-              <input
-                type="text"
-                placeholder="Buscar productos"
-                value={query}
-                onChange={(e)=> {
-                  setQuery(e.target.value);
-                  handleSearch();
-                }}
-                className="w-75 rounded p-2"                
-              />
-              {results.length > 0 && (
-                <ul className="list-group position-absolute mt-2 w-75">
+          {/* Input de busqueda añadido */}
+          <div className="search-autocomplete">
+            <input
+              type="text"
+              placeholder="Buscar productos"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                handleSearch();
+              }}
+              className="w-75 rounded p-2"
+            />
+            {results.length > 0 && (
+              <ul className="list-group position-absolute mt-2 w-75">
                 {results.map((product) => (
                   <li
                     key={product.id}
@@ -81,9 +85,9 @@ export const Header = ({ categories }) => {
                   >
                     {product.name}
                   </li>
-                  ))}
-                </ul>
-              )}           
+                ))}
+              </ul>
+            )}
           </div>
           <Link to="/UserImbox" className="text-light">
             <div className="box box-icon rounded px-3 py-2">

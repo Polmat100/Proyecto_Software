@@ -1,101 +1,95 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "./ImgStyle.css";
 
 export const ProductDetails = () => {
-  const [mainImage, setMainImage] = useState(
-    "https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/12.webp"
-  );
+  const location = useLocation();
+  const { product } = location.state || {};
+  const [mainImage, setMainImage] = useState(product?.imageUrls[0]);
 
-  const handleImageClick = (imageSrc) => {
-    setMainImage(imageSrc);
-  };
+  useEffect(() => {
+    setMainImage(product.imageUrls[0]);
+  }, [product]);
+
+  const handleImageClick = (imageSrc) => setMainImage(imageSrc);
+
+  // Check the product to render
+  if (!product) {
+    return (
+      <div className="text-center my-5 d-flex flex-column gap-4">
+        <h2>Producto no encontrado</h2>
+        <p>Lo sentimos, no hemos podido encontrar el producto que buscas.</p>
+        <Link to="/">Volver a la página principal</Link>
+      </div>
+    );
+  }
 
   return (
     <>
-      <div className="m-5">
+      <div className="mx-5 my-3">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="#">Hogar</a>
+              <Link to={"/" + product.category.name}>
+                {product.category.name}
+              </Link>
             </li>
-            <li className="breadcrumb-item">
-              <a href="#">Tecnologia</a>
-            </li>
+
             <li className="breadcrumb-item active" aria-current="page">
-              Product 1
+              {product.name}
             </li>
           </ol>
         </nav>
       </div>
-      <div className="container mb-5 ">
-        <div className="row d-flex flex-row">
-          <div className="col-md-6 product-image ">
+      <div className="container d-flex flex-row mb-5">
+        <div className="col-7 d-flex flex-row px-4">
+          <div className="product-image d-flex align-items-center">
             <img
               className="img-fluid main-image"
               src={mainImage}
-              alt="Product"
+              alt="main image"
             />
           </div>
-          <div className=" col-md-2 product-small d-flex order-md-first flex-md-column justify-content-center">
-            <img
-              className="touchme img-fluid border border-dark-subtle rounded-4 "
-              src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/12.webp"
-              alt="Product Small 1"
-              onClick={() =>
-                handleImageClick(
-                  "https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/12.webp"
-                )
-              }
-            />
-            <img
-              className="img-fluid border border-dark-subtle rounded-4"
-              src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-              alt="Product Small 2"
-              onClick={() =>
-                handleImageClick(
-                  "https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-                )
-              }
-            />
-            <img
-              className="img-fluid border border-dark-subtle rounded-4"
-              src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/14.webp"
-              alt="Product Small 3"
-              onClick={() =>
-                handleImageClick(
-                  "https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/14.webp"
-                )
-              }
-            />
+          <div className="product-small d-flex order-md-first flex-md-column justify-content-center">
+            {product.imageUrls.map((image) => (
+              <img
+                className="touchme img-fluid border border-dark-subtle rounded-4"
+                src={`${image}`}
+                alt="product image"
+                onClick={() => handleImageClick(image)}
+              />
+            ))}
           </div>
-          <div className="col-md-5 p-5 shadow-lg p-3 mb-5 bg-white rounded text-start">
+        </div>
+
+        <div className="border rounded col-5">
+          <div className="p-3 shadow-lg bg-white rounded text-start">
             <div>
-              <h6 className="mb-3 text-secondary">
-                Fecha de publicacion XX/XX/XXXX
-              </h6>
-              <h2 className="mb-3 card border border-light-subtle fw-bold rounded p-3 shadow bg-warning">
-                Product 1
-              </h2>
-              <h5 className="mb-3 text-secondary">Precio S/.</h5>
-              <Link to="/UserImbox">
-                <div className="btn text-light py-2 btn-details">
+              {/* <h6 className="mb-3 text-secondary">Fecha de publicacion:</h6> */}
+              <h3 className="my-1 card border border-light-subtle fw-bold rounded p-3 shadow bg-warning">
+                {product.name}
+              </h3>
+              <h5 className="my-4 text-secondary">
+                Precio S/. {product.price}
+              </h5>
+              <Link to="/UserImbox" className="d-flex flex-column">
+                <div className="btn text-light py-2 btn-details mx-5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="30"
                     height="30"
                     fill="currentColor"
-                    className="bi bi-chat-dots"
+                    className="bi bi-chat-dots mx-2"
                     viewBox="0 0 16 16"
                   >
                     <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                     <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9 9 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.4 10.4 0 0 1-.524 2.318l-.003.011a11 11 0 0 1-.244.637c-.079.186.074.394.273.362a22 22 0 0 0 .693-.125m.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6-3.004 6-7 6a8 8 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a11 11 0 0 0 .398-2" />
-                  </svg>{" "}
-                  Iniciar Chat{" "}
+                  </svg>
+                  Iniciar Chat
                 </div>
               </Link>
               <div className="text-start">
-                <h2 className="mb-4">Detalles</h2>
+                <h4 className="mt-5 mb-3">Detalles</h4>
                 <div
                   className="accordion accordion-border-color-black"
                   id="accordionExample"
@@ -103,7 +97,7 @@ export const ProductDetails = () => {
                   <div className="accordion-item ">
                     <h2 className="accordion-header">
                       <button
-                        className="accordion-button"
+                        className="accordion-button bg-secondary-subtle"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseOne"
@@ -119,22 +113,21 @@ export const ProductDetails = () => {
                       data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
-                        This is a great product, it's what you need. Please buy
-                        it! I need money.
+                        {product.description}
                       </div>
                     </div>
                   </div>
                   <div className="accordion-item">
                     <h2 className="accordion-header">
                       <button
-                        className="accordion-button collapsed"
+                        className="accordion-button collapsed bg-secondary-subtle"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseTwo"
                         aria-expanded="false"
                         aria-controls="collapseTwo"
                       >
-                        Categoria: A
+                        Categoria
                       </button>
                     </h2>
                     <div
@@ -143,22 +136,21 @@ export const ProductDetails = () => {
                       data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Odit, error.
+                        {product.category.name}
                       </div>
                     </div>
                   </div>
                   <div className="accordion-item">
                     <h2 className="accordion-header">
                       <button
-                        className="accordion-button collapsed"
+                        className="accordion-button collapsed bg-secondary-subtle"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseThree"
                         aria-expanded="false"
                         aria-controls="collapseThree"
                       >
-                        Estado: Nuevo
+                        Estado
                       </button>
                     </h2>
                     <div
@@ -166,20 +158,16 @@ export const ProductDetails = () => {
                       className="accordion-collapse collapse"
                       data-bs-parent="#accordionExample"
                     >
-                      <div className="accordion-body">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Aliquid, inventore.
-                      </div>
+                      <div className="accordion-body">Producto Nuevo</div>
                     </div>
                   </div>
                 </div>
-                <div className="mt-5">Informacion del vendedor: </div>
+                <div className="mt-5">Informacion del vendedor </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div style={{ height: "400px" }}>ProductDetails</div>
     </>
   );
 };

@@ -56,7 +56,7 @@ export const Home = ({ categories }) => {
               COMERCIO CON NUESTRA PLATAFORMA
             </strong>
           </h4>
-          <ul className="lh-lg fw-light my-4">
+          <ul className="lh-lg fw-light my-4" style={{ listStyleType: "none" }}>
             <li>✔ Conectate fácilmente con vendedores y compradores.</li>
             <li>✔ Explora una amplia variedad de productos.</li>
             <li>✔ Vende tus productos de forma rápida y sencilla</li>

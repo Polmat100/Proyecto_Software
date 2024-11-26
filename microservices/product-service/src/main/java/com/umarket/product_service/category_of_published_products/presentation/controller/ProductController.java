@@ -1,6 +1,7 @@
 package com.umarket.product_service.category_of_published_products.presentation.controller;
 
 import com.umarket.product_service.category_of_published_products.businesslogic.models.Product;
+import com.umarket.product_service.category_of_published_products.businesslogic.dto.ProductDTO;
 import com.umarket.product_service.category_of_published_products.businesslogic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +13,11 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService; //Servicio que busca en la base de datos
+    private ProductService productService; //Dependency Injection
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public List<ProductDTO> getAllProducts(){
+        return productService.getAllProductWithImages();
     }
 
     @GetMapping("/category/{category}")
@@ -37,23 +38,9 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
-
-    /*@GetMapping("/search")
+    @GetMapping("/search")
     public List<Product> searchProducts(@RequestParam String name) {
         return productService.searchProductsByName(name);
-    }*/
-    @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam(required = false) String name, @RequestParam(required = false) String category) {
-        if (name != null && category != null) {
-            return productService.searchByNameAndCategory(name, category);
-        } else if (name != null) {
-            return productService.searchProductsByName(name);
-        } else if (category != null) {
-            return productService.getProductsByCategory(category);
-        } else {
-            return productService.getAllProducts();
-        }
     }
-
 
 }

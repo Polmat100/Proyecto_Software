@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import { ProductFormModal } from "../../components/ProductFormModal";
 import { Link } from "react-router-dom";
 
-const URLUSERPOSTS = "http://localhost:8080/api/products"; 
-const URLPRODUCTIMAGES = "http://localhost:8080/api/product_images"; 
+const URLUSERPOSTS = "http://localhost:8080/api/products";
+const URLPRODUCTIMAGES = "http://localhost:8080/api/product_images";
 
 export const UserPosts = () => {
-  const [posts, setPosts] = useState([]); 
-  const [productImages, setProductImages] = useState({}); 
-  const [productModal, setProductModal] = useState(false); 
-  const [editingProduct, setEditingProduct] = useState(null); 
+  const [posts, setPosts] = useState([]);
+  const [productImages, setProductImages] = useState({});
+  const [productModal, setProductModal] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const getUserPosts = async () => {
     try {
-   
       const [responseProducts, responseImages] = await Promise.all([
         fetch(URLUSERPOSTS),
         fetch(URLPRODUCTIMAGES),
@@ -26,10 +25,8 @@ export const UserPosts = () => {
       const dataProducts = await responseProducts.json();
       const dataImages = await responseImages.json();
 
- 
       setPosts(dataProducts);
 
-      
       const imagesByProductId = dataImages.reduce((acc, image) => {
         const productId = image.product.id;
         if (!acc[productId]) {
@@ -39,7 +36,7 @@ export const UserPosts = () => {
         return acc;
       }, {});
 
-      setProductImages(imagesByProductId); 
+      setProductImages(imagesByProductId);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -60,14 +57,17 @@ export const UserPosts = () => {
   };
 
   const deleteProduct = async (productId) => {
+    
+    const confirmed = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
+    if (!confirmed) return;
+
     try {
       const response = await fetch(`${URLUSERPOSTS}/${productId}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-
-        setPosts(posts.filter(post => post.id !== productId));
+        setPosts(posts.filter((post) => post.id !== productId));
       } else {
         console.error("Error al eliminar el producto");
       }
@@ -84,7 +84,7 @@ export const UserPosts = () => {
         <button
           type="button"
           className="btn btn-outline-success btn-lg"
-          onClick={() => showModal()} 
+          onClick={() => showModal()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +100,12 @@ export const UserPosts = () => {
         </button>
       </div>
 
-      {productModal && <ProductFormModal closeModal={closeModal} product={editingProduct}></ProductFormModal>}
+      {productModal && (
+        <ProductFormModal
+          closeModal={closeModal}
+          product={editingProduct} 
+        ></ProductFormModal>
+      )}
       {productModal && <div className="modal-backdrop fade show"></div>}
 
       <div className="container py-5">
@@ -110,26 +115,29 @@ export const UserPosts = () => {
         <div className="row">
           {posts.map((post) => (
             <div key={post.id} className="col-lg-6 col-md-12 mb-4">
-
               <div className="card shadow-sm border-0 rounded-3 d-flex flex-row">
-
                 <img
-                  src={productImages[post.id]?.[0] || "https://via.placeholder.com/300x200"} 
+                  src={productImages[post.id]?.[0] || "https://via.placeholder.com/300x200"}
                   alt={post.name}
                   className="card-img-start rounded-start"
                   style={{ width: "200px", height: "200px", objectFit: "cover" }}
                 />
                 <div className="card-body d-flex flex-column justify-content-between">
-                  <h5 className="card-title text-truncate" style={{ fontSize: "1.2rem" }}>
+                  <h5
+                    className="card-title text-truncate"
+                    style={{ fontSize: "1.2rem" }}
+                  >
                     {post.name}
                   </h5>
-                  <p className="card-text text-muted" style={{ fontSize: "0.9rem" }}>
+                  <p
+                    className="card-text text-muted"
+                    style={{ fontSize: "0.9rem" }}
+                  >
                     {post.description.slice(0, 100)}...
                   </p>
                   <p className="text-danger">{post.category.name}</p>
                   <h6 className="text-success">S/.{post.price}</h6>
 
-                  {}
                   <div className="mt-3">
                     <button
                       onClick={() => showModal(post)} 

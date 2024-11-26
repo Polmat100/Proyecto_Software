@@ -3,17 +3,19 @@ package com.umarket.product_service.category_of_published_products.dataaccess;
 import com.umarket.product_service.category_of_published_products.businesslogic.models.Category;
 import com.umarket.product_service.category_of_published_products.businesslogic.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    // Buscar productos por la categoría (con el objeto Category)
+    // find products by category
     List<Product> findByCategory(Category category);
 
-    // Buscar por nombre (que contenga IgnoreCase)
+    // find products by name ignoring upper and lower case
     List<Product> findByNameContainingIgnoreCase(String name);
 
-    /*// Buscar productos por nombre y categoría (puede ser útil si deseas una búsqueda más específica)*/
-    List<Product> findByNameContainingIgnoreCaseAndCategory(String name, Category category);
+    //Using @query to define a JPQL query (custom)
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images LEFT JOIN FETCH p.category")
+    List<Product> findAllWithImages();
 
 }
