@@ -30,6 +30,14 @@ public class UserService {
 
         return userRepository.save(user);
     }
+    public User authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email);  // Buscar por email
 
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return user;  // Autenticación exitosa
+        }
+
+        return null;  // Credenciales incorrectas
+    }
 
 }
