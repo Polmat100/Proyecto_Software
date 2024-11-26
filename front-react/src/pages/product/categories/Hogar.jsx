@@ -5,7 +5,7 @@ import { CardProduct } from "../../../components/CardProduct";
 export const Hogar = () => {
   const URLPRODUCTS = "http://localhost:8080/api/products";
   const CATEGORYNAME = "Hogar";
-  const [categoryProducts, setCategoryProducts] = useState([]);
+  const [categoryProducts, setCategoryProducts] = useState([]);  
 
   useEffect(() => {
     const fetchProductsAndImages = async () => {
@@ -14,12 +14,13 @@ export const Hogar = () => {
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
 
-        // Filter category
+        // Filtrar productos por categoría
         const filteredProducts = data.filter(
           (product) => product.category.name === CATEGORYNAME
         );
 
         setCategoryProducts(filteredProducts);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -27,49 +28,42 @@ export const Hogar = () => {
 
     fetchProductsAndImages();
   }, []);
+
   return (
     <>
       <div className="container-fluid">
         <div className="row">
-          {/*Filter's options*/}
+          {/* Opciones de filtro */}
           <div className="col-lg-3">
             <h3>Filtros</h3>
             <Accordion defaultActiveKey="0">
               <Accordion.Item eventKey="0">
-                <Accordion.Header>Marcas</Accordion.Header>
+                <Accordion.Header>Marcas y Tipos</Accordion.Header>
                 <Accordion.Body>
-                  <ul className="list-unstyled">
-                    <li>
-                      <input type="checkbox" id="brand1" />
-                      <label htmlFor="brand1">Adidas</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="brand2" />
-                      <label htmlFor="brand2">Diadora</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="brand2" />
-                      <label htmlFor="brand2">Puma</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="brand2" />
-                      <label htmlFor="brand2">Nike</label>
-                    </li>
-                  </ul>
+                <ul className="list-unstyled">
+                  {categoryProducts.map((product) => (
+                  <li key={product.id}>
+                      <input type="checkbox" id={`product-${product.id}`} />
+                      <label htmlFor={`product-${product.id}`}>{product.name}</label>
+                  </li>))}                                                            
+                </ul> 
                 </Accordion.Body>
               </Accordion.Item>
+
               <Accordion.Item eventKey="1">
                 <Accordion.Header>Precio</Accordion.Header>
-                <Accordion.Body>
+                <Accordion.Body>  
                   <ul className="list-unstyled">
-                    <li>
-                      <input type="checkbox" id="price1" />
-                      <label htmlFor="price1">S/. 0 - 50</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="price2" />
-                      <label htmlFor="price2">S/. 50 - 100</label>
-                    </li>
+                    {/* Sort products by price before mapping */}
+                    {categoryProducts
+                      .slice() // We make a copy of the array to avoid mutating the original state
+                      .sort((a, b) => a.price - b.price) //  Sort by ascending price
+                      .map((product) => (
+                        <li key={product.id}>
+                          <input type="checkbox" id={`price-${product.id}`} />
+                          <label htmlFor={`price-${product.id}`}>S/. {product.price}</label>
+                        </li>
+                      ))}
                   </ul>
                 </Accordion.Body>
               </Accordion.Item>
