@@ -1,6 +1,7 @@
 package com.umarket.user_service.controllers;
 
 
+import com.umarket.user_service.businesslogic.models.LoginRequest;
 import com.umarket.user_service.businesslogic.models.User;
 import com.umarket.user_service.dataaccess.repositories.UserRepository;
 import com.umarket.user_service.businesslogic.services.UserService;
@@ -64,4 +65,16 @@ public class UserController {
             return ResponseEntity.badRequest().body("Error al registrar usuario: " + e.getMessage());
         }
     }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());  // Usamos email
+
+        if (user != null) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+
 }

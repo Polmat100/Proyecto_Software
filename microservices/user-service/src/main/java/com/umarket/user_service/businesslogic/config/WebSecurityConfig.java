@@ -25,6 +25,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/list").permitAll()
                         .requestMatchers("/api/auth/delete/{id}").permitAll()
                         .requestMatchers("/api/auth/edit/{id}").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
                         .anyRequest().authenticated()  // Protege las demás rutas
                 )
                 .httpBasic(withDefaults());  // Nueva configuración para httpBasic
