@@ -2,26 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70682a06-f15f-472f-aaf9-876c8a9eb491" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../front-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../front-react/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../front-react/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/config/WebSocketConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/controller/ChatController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/model/Chat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/model/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/model/Status.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../front-react/src/pages/user/UserImbox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front-react/src/pages/user/UserImbox.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/mvnw.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Configuration/WebSocketConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Controller/ChatController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Controller/MessageController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Model/Chat.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Model/Message.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Model/Status.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Repository/ChatRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Repository/MessageRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Service/ChatService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/Service/MessageService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/umarket/chat_service/ChatServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/test/java/com/umarket/chat_service/ChatServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/test2/Configuration/WebSocketConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/test2/Controller/ChatController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/test2/Domain/Model/Message.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/umarket/chat_service/test2/Domain/Model/Status.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,9 +23,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2pJD0WrImo6UF3GjBV1P9Yk6UKX" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -45,7 +37,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "add/ChatLogic",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/DIEGO/Desktop/RepositoriosGithub/REPODAS/Proyecto_Software/microservices/chat-service"
+    "last_opened_file_path": "C:/Users/DIEGO/Desktop/RepositoriosGithub/REPODAS/Proyecto_Software"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
