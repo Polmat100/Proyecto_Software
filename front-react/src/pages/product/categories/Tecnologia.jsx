@@ -37,40 +37,32 @@ export const Tecnologia = () => {
             <h3>Filtros</h3>
             <Accordion defaultActiveKey="0">
               <Accordion.Item eventKey="0">
-                <Accordion.Header>Marcas</Accordion.Header>
+                <Accordion.Header>Marcas y Tipos</Accordion.Header>
                 <Accordion.Body>
-                  <ul className="list-unstyled">
-                    <li>
-                      <input type="checkbox" id="brand1" />
-                      <label htmlFor="brand1">Adidas</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="brand2" />
-                      <label htmlFor="brand2">Diadora</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="brand2" />
-                      <label htmlFor="brand2">Puma</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="brand2" />
-                      <label htmlFor="brand2">Nike</label>
-                    </li>
-                  </ul>
+                <ul className="list-unstyled">
+                  {categoryProducts.map((product) => (
+                  <li key={product.id}>
+                      <input type="checkbox" id={`product-${product.id}`} />
+                      <label htmlFor={`product-${product.id}`}>{product.name}</label>
+                  </li>))}                                                            
+                </ul> 
                 </Accordion.Body>
               </Accordion.Item>
+              
               <Accordion.Item eventKey="1">
                 <Accordion.Header>Precio</Accordion.Header>
-                <Accordion.Body>
+                <Accordion.Body>  
                   <ul className="list-unstyled">
-                    <li>
-                      <input type="checkbox" id="price1" />
-                      <label htmlFor="price1">S/. 0 - 50</label>
-                    </li>
-                    <li>
-                      <input type="checkbox" id="price2" />
-                      <label htmlFor="price2">S/. 50 - 100</label>
-                    </li>
+                    {/* Ordenar los productos por precio antes de mapear */}
+                    {categoryProducts
+                      .slice() // Hacemos una copia del array para evitar mutar el estado original
+                      .sort((a, b) => a.price - b.price) // Ordenar por precio ascendente
+                      .map((product) => (
+                        <li key={product.id}>
+                          <input type="checkbox" id={`price-${product.id}`} />
+                          <label htmlFor={`price-${product.id}`}>S/. {product.price}</label>
+                        </li>
+                      ))}
                   </ul>
                 </Accordion.Body>
               </Accordion.Item>
