@@ -17,7 +17,6 @@ import { Moda } from "./pages/product/categories/Moda";
 import { Header } from "./components/Header";
 import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
-import { Filterproductbysearchbar } from "./pages/product/Filterproductbysearchbar";
 
 const URLCATEGORIES = "http://localhost:8080/api/categories";
 
