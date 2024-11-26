@@ -14,6 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // find products by name ignoring upper and lower case
     List<Product> findByNameContainingIgnoreCase(String name);
 
+    //Using @query to define a JPQL query (custom)
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images LEFT JOIN FETCH p.category")
     List<Product> findAllWithImages();
 
