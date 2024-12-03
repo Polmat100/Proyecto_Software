@@ -2,13 +2,14 @@ package com.umarket.product_service.category_of_published_products.businesslogic
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class CategoryDTO {
+public class ProductSearchDTO {
     private Integer id;
     private String name;
-    private String description;
 }

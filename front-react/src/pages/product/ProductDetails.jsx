@@ -5,10 +5,10 @@ import "./ImgStyle.css";
 export const ProductDetails = () => {
   const location = useLocation();
   const { product } = location.state || {};
-  const [mainImage, setMainImage] = useState(product?.imageUrls[0]);
+  const [mainImage, setMainImage] = useState(product?.images[0].imageUrl);
 
   useEffect(() => {
-    setMainImage(product.imageUrls[0]);
+    setMainImage(product.images[0].imageUrl);
   }, [product]);
 
   const handleImageClick = (imageSrc) => setMainImage(imageSrc);
@@ -51,12 +51,13 @@ export const ProductDetails = () => {
             />
           </div>
           <div className="product-small d-flex order-md-first flex-md-column justify-content-center">
-            {product.imageUrls.map((image) => (
+            {product.images.map((image) => (
               <img
                 className="touchme img-fluid border border-dark-subtle rounded-4"
-                src={`${image}`}
+                src={`${image.imageUrl}`}
                 alt="product image"
-                onClick={() => handleImageClick(image)}
+                key={image.id}
+                onClick={() => handleImageClick(image.imageUrl)}
               />
             ))}
           </div>

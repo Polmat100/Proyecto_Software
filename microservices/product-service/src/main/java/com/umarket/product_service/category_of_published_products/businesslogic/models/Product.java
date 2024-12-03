@@ -1,6 +1,7 @@
 package com.umarket.product_service.category_of_published_products.businesslogic.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,12 +35,12 @@ public class Product {
     @Column(name = "posted_at", updatable = false)
     private LocalDateTime postedAt;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY) //We define the many-to-one relationship, where many products can be related to a single category
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImage> images;
 

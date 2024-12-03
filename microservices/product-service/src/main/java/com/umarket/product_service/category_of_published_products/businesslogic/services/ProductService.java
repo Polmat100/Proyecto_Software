@@ -1,17 +1,15 @@
 package com.umarket.product_service.category_of_published_products.businesslogic.services;
 
-import com.umarket.product_service.category_of_published_products.businesslogic.dto.CategoryDTO;
-import com.umarket.product_service.category_of_published_products.businesslogic.dto.ProductDTO;
-import com.umarket.product_service.category_of_published_products.businesslogic.models.Category;
+import com.umarket.product_service.category_of_published_products.businesslogic.dto.ProductSearchDTO;
 import com.umarket.product_service.category_of_published_products.businesslogic.models.Product;
-import com.umarket.product_service.category_of_published_products.businesslogic.models.ProductImage;
 import com.umarket.product_service.category_of_published_products.dataaccess.CategoryRepository;
 import com.umarket.product_service.category_of_published_products.dataaccess.ProductRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -21,46 +19,20 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    //Methods
+    //Get products
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAllWithImages();
     }
 
-    public List<ProductDTO> getAllProductWithImages(){
-        return productRepository.findAllWithImages().stream().map(product -> {
-            List<String> imagesUrls = product.getImages().stream()
-                    .map(ProductImage::getImageUrl).toList();
-
-            CategoryDTO categoryDTO = null;
-            if (product.getCategory() != null) {
-                categoryDTO = new CategoryDTO(
-                        product.getCategory().getId(),
-                        product.getCategory().getName(),
-                        product.getCategory().getDescription()
-                );
-            }
-
-            return new ProductDTO(
-                    product.getId(),
-                    product.getName(),
-                    product.getDescription(),
-                    product.getPrice(),
-                    product.getStatus(),
-                    categoryDTO,
-                    imagesUrls
-            );
-
-        }).toList();
-    }
-
-    public List<Product> getProductsByCategory(String categoryName) {
-        Optional<Category> category=categoryRepository.findByName(categoryName);
-        return category.map(productRepository::findByCategory).orElseGet(List::of);
-    }
-
-    public List<Product> searchProductsByName(String name){
-        //Search products ignoring upper or lower case
-        return  productRepository.findByNameContainingIgnoreCase(name);
+    //Search product
+    public List<ProductSearchDTO> searchProductsByName(String name) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(name);
+        return products.stream()
+                .map(product -> new ProductSearchDTO(
+                        product.getId(),
+                        product.getName()
+                ))
+                .collect(Collectors.toList());
     }
 
     //Add product

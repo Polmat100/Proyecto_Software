@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductImageService {
@@ -18,13 +17,10 @@ public class ProductImageService {
         return productImageRepository.findAll();
     }
 
-    public Optional<ProductImage> getImageById(Integer id){
-        return productImageRepository.findById(id);
-    }
-
     public ProductImage addImage(ProductImage image){
         return productImageRepository.save(image);
     }
+
     public void deleteImageById(Integer id){
         productImageRepository.deleteById(id);
     }

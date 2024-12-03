@@ -16,22 +16,10 @@ import { Estudio } from "./pages/product/categories/Estudio";
 import { Moda } from "./pages/product/categories/Moda";
 import { Header } from "./components/Header";
 import Footer from "./components/Footer";
-import { useEffect, useState } from "react";
-
-const URLCATEGORIES = "http://localhost:8080/api/categories";
+import { getCategories } from "./scripts/getCategories";
 
 export const App = () => {
-  const [categories, setCategories] = useState([]);
-
-  const getCategories = async () => {
-    const response = await fetch(URLCATEGORIES);
-    const data = await response.json();
-    setCategories(data);
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, [URLCATEGORIES]);
+  const { categories, loadingCategories, errorCategories } = getCategories();
 
   return (
     <>
