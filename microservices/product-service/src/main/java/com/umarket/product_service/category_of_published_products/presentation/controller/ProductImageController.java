@@ -20,18 +20,12 @@ public class ProductImageController {
         return ResponseEntity.ok(images);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductImage> getImageById(@PathVariable Integer id) {
-        return productImageService.getImageById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @PostMapping
     public ResponseEntity<ProductImage> addImage(@RequestBody ProductImage image){
         ProductImage saveImage = productImageService.addImage(image);
         return ResponseEntity.ok(saveImage);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteImageById(@PathVariable Integer id) {
         productImageService.deleteImageById(id);

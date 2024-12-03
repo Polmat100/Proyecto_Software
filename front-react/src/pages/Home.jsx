@@ -1,20 +1,12 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardProduct } from "../components/CardProduct";
-const URLPRODUCTS = "http://localhost:8080/api/products";
+import { getProducts } from "../scripts/getProducts";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export const Home = ({ categories }) => {
-  const [products, setProducts] = useState([]);
+  const { products, loadingProducts, errorProducts } = getProducts();
   const [visibleCount, setVisibleCount] = useState(6);
-
-  const getProducts = async () => {
-    const response = await fetch(URLPRODUCTS);
-    const data = await response.json();
-    setProducts(data);
-  };
-  useEffect(() => {
-    getProducts();
-  }, [URLPRODUCTS]);
 
   const handleLoadMore = () => {
     setVisibleCount((prevCount) => prevCount + 6);
@@ -28,11 +20,13 @@ export const Home = ({ categories }) => {
           <strong>PRODUCTOS</strong>
         </h3>
         <div className="row">
-          {visibleProducts.map((product) => (
-            <CardProduct key={product.id} product={product} />
-          ))}
+          {loadingProducts && <LoadingSpinner />}
+          {errorProducts && <div>{errorProducts}</div>}
+          {products &&
+            visibleProducts.map((product) => (
+              <CardProduct key={product.id} product={product} />
+            ))}
         </div>
-
         {visibleCount < products.length && (
           <button
             onClick={handleLoadMore}
