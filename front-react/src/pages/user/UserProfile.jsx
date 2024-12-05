@@ -152,8 +152,14 @@ export const UserProfile = () => {
                     <button
                       className="btn btn-primary"
                       onClick={() => setIsEditing(true)}
-                    >
+                      >
                       Editar Perfil
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={handleDelete}
+                    >
+                      Eliminar Perfil
                     </button>
                     <Link
                       to="/Login"
