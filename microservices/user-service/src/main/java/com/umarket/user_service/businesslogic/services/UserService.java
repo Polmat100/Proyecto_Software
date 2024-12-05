@@ -49,8 +49,8 @@ public class UserService {
         userRepository.save(newUser);
     }
 
-    public User editUserProfile(int userId, EditUserRequestDTO request) {
-        User user = userRepository.findById(userId)
+    public User editUserProfile(String email, EditUserRequestDTO request) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setName(request.getName());
@@ -62,8 +62,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(int userId) {
-        User user = userRepository.findById(userId)
+    public void deleteUser(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         userRepository.delete(user);

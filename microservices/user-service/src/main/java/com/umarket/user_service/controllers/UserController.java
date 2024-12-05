@@ -39,20 +39,21 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{userId}/edit")
-    public ResponseEntity<User> editUserProfile(@PathVariable int userId, @RequestBody EditUserRequestDTO request) {
+    @PutMapping("/{userEmail}/edit")
+    public ResponseEntity<User> editUserProfile(@PathVariable String email, @RequestBody EditUserRequestDTO request) {
         try {
-            User updatedUser = userService.editUserProfile(userId, request);
+            User updatedUser = userService.editUserProfile(email, request);
             return ResponseEntity.ok(updatedUser);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int userId) {
+
+    @DeleteMapping("/{userEmail}/delete")
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
         try {
-            userService.deleteUser(userId);
+            userService.deleteUser(email);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
