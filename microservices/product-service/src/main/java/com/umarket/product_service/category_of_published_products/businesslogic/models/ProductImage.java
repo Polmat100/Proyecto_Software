@@ -19,7 +19,7 @@ public class ProductImage {
     private String imageUrl;
 
     @ManyToOne //Many_to_one relationship. Which means that a product can have multiple images
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     private Product product;
 }

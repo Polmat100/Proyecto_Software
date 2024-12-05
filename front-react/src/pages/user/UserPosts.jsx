@@ -3,7 +3,7 @@ import { ProductFormModal } from "../../components/ProductFormModal";
 import { getProducts } from "../../scripts/getProducts";
 
 export const UserPosts = () => {
-  const URLUSERPOSTS = "http://localhost:8080/api/products";
+  const URLUSERPOSTS = "http://localhost:8081/api/products";
 
   const { products, loadingProducts, errorProducts } = getProducts();
   const [productModal, setProductModal] = useState(false);

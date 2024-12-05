@@ -41,7 +41,7 @@ public class Product {
     private Category category;
 
     //@JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProductImage> images;
 
     //CONSTRUCTORS
