@@ -1,12 +1,19 @@
 import "./Autocomplete.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getUserData } from "../scripts/getUserData";
 
 export const Header = ({ categories }) => {
   const [dropDown, setDropDown] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate(); //Instanciar useNavigate
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const userData = getUserData();
+    if (userData) setUser(userData);
+  }, []);
 
   const changeDropDown = () => {
     setDropDown(!dropDown);
@@ -45,6 +52,11 @@ export const Header = ({ categories }) => {
     } catch (error) {
       console.log("Error: " + error);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/Login");
   };
 
   return (
@@ -104,68 +116,121 @@ export const Header = ({ categories }) => {
               </svg>
             </div>
           </Link>
-          <div
-            className="box box-icon rounded dropdown"
-            onMouseEnter={changeDropDown}
-            onMouseLeave={changeDropDown}
-          >
-            <button
-              className="btn dropdown-toggle box box-icon rounded px-3 py-2 text-light"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                fill="currentColor"
-                className="bi bi-person"
-                viewBox="0 0 16 16"
+
+          {!user && (
+            <div className="box box-icon rounded dropdown ">
+              <Link
+                to={"/Login"}
+                className="btn  rounded px-3 py-2 text-light d-flex flex-row align-items-center"
+                type="button"
+                aria-expanded="false"
               >
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-              </svg>
-            </button>
-            <ul
-              className={`dropdown-menu ${dropDown ? "show" : ""}`}
-              style={{ backgroundColor: "rgba(230, 173, 29, 0.952)" }}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="currentColor"
+                  className="bi bi-person"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                </svg>
+                <strong> Login</strong>
+              </Link>
+            </div>
+          )}
+          {user && (
+            <div
+              className="box box-icon rounded dropdown"
+              onMouseEnter={changeDropDown}
+              onMouseLeave={changeDropDown}
             >
-              <li>
-                <Link to="/UserProfile" className="dropdown-item">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    fill="currentColor"
-                    className="bi bi-card-list mx-1 my-2"
-                    viewBox="0 0 16 16"
+              <button
+                className="btn dropdown-toggle box box-icon rounded px-3 py-2 text-light"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="currentColor"
+                  className="bi bi-person"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                </svg>
+                <strong>{user.name.toUpperCase()}</strong>
+              </button>
+              <ul
+                className={`dropdown-menu ${dropDown ? "show" : ""}`}
+                style={{ backgroundColor: "rgba(230, 173, 29, 0.952)" }}
+              >
+                <li>
+                  <Link to="/UserProfile" className="dropdown-item">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      fill="currentColor"
+                      className="bi bi-card-list mx-1 my-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                      <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
+                    </svg>
+                    Mi Perfil
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/UserPosts" className="dropdown-item">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      fill="currentColor"
+                      className="bi bi-activity mx-1 my-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2"
+                      />
+                    </svg>
+                    Mis Ventas
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/Login"
+                    className="dropdown-item fw-bold"
+                    style={{ color: "rgb(179, 31, 31)" }}
+                    onClick={handleLogout}
                   >
-                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
-                    <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
-                  </svg>
-                  Mi Perfil
-                </Link>
-              </li>
-              <li>
-                <Link to="/UserPosts" className="dropdown-item">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    fill="currentColor"
-                    className="bi bi-activity mx-1 my-2"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2"
-                    />
-                  </svg>
-                  Mis Ventas
-                </Link>
-              </li>
-            </ul>
-          </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      fill="currentColor"
+                      className="bi bi-box-arrow-right mx-1 my-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"
+                      />
+                      <path
+                        fillRule="evenodd"
+                        d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
+                      />
+                    </svg>
+                    Cerrar Sesión
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="d-flex justify-content-evenly py-3">

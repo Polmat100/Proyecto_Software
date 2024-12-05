@@ -1,7 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/login/Login";
 import { Register } from "./pages/login/Register";
@@ -20,29 +20,30 @@ import { getCategories } from "./scripts/getCategories";
 
 export const App = () => {
   const { categories, loadingCategories, errorCategories } = getCategories();
+  const location = useLocation();
+  const noHeaderFooterRoutes = ["/Login", "/Register"];
+  const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
 
   return (
     <>
-      <BrowserRouter>
-        <Header categories={categories} />
+      {showHeaderFooter && <Header categories={categories} />}
 
-        <Routes>
-          <Route path="/" element={<Home categories={categories} />}></Route>
-          <Route path="/Login" element={<Login />}></Route>
-          <Route path="/Register" element={<Register />}></Route>
-          <Route path="/UserImbox" element={<UserImbox />}></Route>
-          <Route path="/UserPosts" element={<UserPosts />}></Route>
-          <Route path="/UserProfile" element={<UserProfile />}></Route>
-          <Route path="/ProductDetails" element={<ProductDetails />}></Route>
-          <Route path="/Deporte" element={<Deporte />}></Route>
-          <Route path="/Hogar" element={<Hogar />}></Route>
-          <Route path="/Tecnología" element={<Tecnologia />}></Route>
-          <Route path="/Estudio" element={<Estudio />}></Route>
-          <Route path="/Moda" element={<Moda />}></Route>
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Home categories={categories} />}></Route>
+        <Route path="/Login" element={<Login />}></Route>
+        <Route path="/Register" element={<Register />}></Route>
+        <Route path="/UserImbox" element={<UserImbox />}></Route>
+        <Route path="/UserPosts" element={<UserPosts />}></Route>
+        <Route path="/UserProfile" element={<UserProfile />}></Route>
+        <Route path="/ProductDetails" element={<ProductDetails />}></Route>
+        <Route path="/Deporte" element={<Deporte />}></Route>
+        <Route path="/Hogar" element={<Hogar />}></Route>
+        <Route path="/Tecnología" element={<Tecnologia />}></Route>
+        <Route path="/Estudio" element={<Estudio />}></Route>
+        <Route path="/Moda" element={<Moda />}></Route>
+      </Routes>
 
-        <Footer categories={categories} />
-      </BrowserRouter>
+      {showHeaderFooter && <Footer categories={categories} />}
     </>
   );
 };
