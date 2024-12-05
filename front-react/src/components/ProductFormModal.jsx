@@ -19,7 +19,7 @@ export const ProductFormModal = ({ closeModal, product }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/categories");
+        const response = await fetch("http://localhost:8081/api/categories");
         if (!response.ok) throw new Error("Error al cargar categorías");
         const data = await response.json();
         setCategories(data);
@@ -79,59 +79,42 @@ export const ProductFormModal = ({ closeModal, product }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+  
     try {
-      
       const productData = {
         name: formProduct.title,
         description: formProduct.description,
-        category: { id: parseInt(formProduct.category, 10) }, 
-        price: parseFloat(formProduct.price), 
+        category: { id: parseInt(formProduct.category, 10) },
+        price: parseFloat(formProduct.price),
+        images: formProduct.imageUrls
+          .filter((url) => url.trim() !== "") // Filtra URLs vacías
+          .map((url) => ({ imageUrl: url })), // Agrega las imágenes al producto
       };
-
+  
       const productResponse = await fetch(
         isEditing
-          ? `http://localhost:8080/api/products/${formProduct.id}`
-          : "http://localhost:8080/api/products",
+          ? `http://localhost:8081/api/products/${formProduct.id}`
+          : "http://localhost:8081/api/products",
         {
           method: isEditing ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(productData),
         }
       );
-
+  
       if (!productResponse.ok) {
         const errorData = await productResponse.json();
         throw new Error(errorData.message || "Error al registrar el producto");
       }
-
-      const createdProduct = await productResponse.json();
-      const productId = createdProduct.id;
-
-
-      const imageRequests = formProduct.imageUrls.map((url) =>
-        fetch("http://localhost:8080/api/product_images", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            imageUrl: url,
-            product: { id: productId }, 
-          }),
-        })
-      );
-
-      const imageResponses = await Promise.all(imageRequests);
-      if (imageResponses.some((res) => !res.ok)) {
-        throw new Error("Error al registrar una o más imágenes");
-      }
-
-      closeModal(); 
+  
+      closeModal(); // Cierra el modal
     } catch (err) {
       setError(err.message || "Hubo un problema al enviar los datos");
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const getCategories = () => {
-  const URLCATEGORIES = "http://localhost:8080/api/categories";
+  const URLCATEGORIES = "http://localhost:8081/api/categories";
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
   const [errorCategories, setErrorCategories] = useState(null);

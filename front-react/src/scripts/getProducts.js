@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const getProducts = () => {
-  const URLPRODUCTS = "http://localhost:8080/api/products";
+  const URLPRODUCTS = "http://localhost:8081/api/products";
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [errorProducts, setErrorProducts] = useState(null);
