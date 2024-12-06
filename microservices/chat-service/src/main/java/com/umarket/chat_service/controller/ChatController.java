@@ -38,13 +38,13 @@ public class ChatController {
         System.out.println("Mensaje recibido: " + message);
 
         // Guardar mensaje en la base de datos
-        Message savedMessage = messageRepository.save(new Message(
+        /*Message savedMessage = messageRepository.save(new Message(
                 message.getChatId(),
                 message.getContent(),
                 "unread",
                 message.getUserId()
-        ));
+        ));*/
 
-        return savedMessage;
+        return message;
     }
 }
