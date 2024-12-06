@@ -1,49 +1,32 @@
 package com.umarket.chat_service.model;
 
+import jakarta.persistence.*;
+import jakarta.websocket.server.ServerEndpoint;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "chats")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Chat {
-    private String idChat;
-    private String user1;
-    private String user2;
-    private String idProduct;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long chatId;
 
-    // Constructor
-    public Chat(String idChat, String user1, String user2, String idProduct) {
-        this.idChat = idChat;
-        this.user1 = user1;
-        this.user2 = user2;
-        this.idProduct = idProduct;
-    }
+    @Column(nullable = false)
+    private Long buyerId;
 
-    // Getters y Setters
-    public String getIdChat() {
-        return idChat;
-    }
+    @Column(nullable = false)
+    private Long sellerId;
 
-    public void setIdChat(String idChat) {
-        this.idChat = idChat;
-    }
+    @Column(nullable = false)
+    private Long productId;
 
-    public String getUser1() {
-        return user1;
-    }
-
-    public void setUser1(String user1) {
-        this.user1 = user1;
-    }
-
-    public String getUser2() {
-        return user2;
-    }
-
-    public void setUser2(String user2) {
-        this.user2 = user2;
-    }
-
-    public String getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(String idProduct) {
-        this.idProduct = idProduct;
-    }
+    @Column(nullable = false)
+    private LocalDateTime dateCreation;
 }

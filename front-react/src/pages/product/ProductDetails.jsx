@@ -1,19 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { getUserData } from "../../scripts/getUserData";
 import "./ImgStyle.css";
+import axios from "axios";
 
 export const ProductDetails = () => {
   const location = useLocation();
+  const [userData, setUserData] = useState(null);
   const { product } = location.state || {};
   const [mainImage, setMainImage] = useState(product?.images[0].imageUrl);
+  const [userId, setUserId] = useState(null);
+  const [buyerId, setBuyerId] = useState(null);
+
+  const userEmail = userData ? userData.email : null;
 
   useEffect(() => {
-    setMainImage(product.images[0].imageUrl);
+    setMainImage(product?.images[0].imageUrl);
   }, [product]);
+
+  useEffect(() => {
+    const data = getUserData();
+    setUserData(data || { email: "Usuario Anónimo" });
+  }, []);
+
+  // Obtener Seller ID y Buyer ID
+  useEffect(() => {
+    const fetchIds = async () => {
+      try {
+        const sellerResponse = await axios.get("http://localhost:8089/users/idP", {
+          params: { idP: product?.id },
+        });
+        setUserId(sellerResponse.data);
+
+        if (userEmail) {
+          const buyerResponse = await axios.get("http://localhost:8089/users/id", {
+            params: { correo: userEmail },
+          });
+          setBuyerId(buyerResponse.data);
+        }
+      } catch (error) {
+        console.error("Error al obtener los IDs:", error);
+      }
+    };
+
+    if (product && userEmail) {
+      fetchIds();
+    }
+  }, [product, userEmail]);
 
   const handleImageClick = (imageSrc) => setMainImage(imageSrc);
 
-  // Check the product to render
+  // Comprobamos si el producto existe
   if (!product) {
     return (
       <div className="text-center my-5 d-flex flex-column gap-4">
@@ -34,7 +71,6 @@ export const ProductDetails = () => {
                 {product.category.name}
               </Link>
             </li>
-
             <li className="breadcrumb-item active" aria-current="page">
               {product.name}
             </li>
@@ -66,14 +102,17 @@ export const ProductDetails = () => {
         <div className="border rounded col-5">
           <div className="p-3 shadow-lg bg-white rounded text-start">
             <div>
-              {/* <h6 className="mb-3 text-secondary">Fecha de publicacion:</h6> */}
               <h3 className="my-1 card border border-light-subtle fw-bold rounded p-3 shadow bg-warning">
                 {product.name}
               </h3>
               <h5 className="my-4 text-secondary">
                 Precio S/. {product.price}
               </h5>
-              <Link to="/UserImbox" className="d-flex flex-column">
+              <Link
+                to="/UserImbox"
+                className="d-flex flex-column"
+                state={{ product, buyerId }}
+              >
                 <div className="btn text-light py-2 btn-details mx-5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -91,11 +130,8 @@ export const ProductDetails = () => {
               </Link>
               <div className="text-start">
                 <h4 className="mt-5 mb-3">Detalles</h4>
-                <div
-                  className="accordion accordion-border-color-black"
-                  id="accordionExample"
-                >
-                  <div className="accordion-item ">
+                <div className="accordion accordion-border-color-black" id="accordionExample">
+                  <div className="accordion-item">
                     <h2 className="accordion-header">
                       <button
                         className="accordion-button bg-secondary-subtle"
@@ -159,11 +195,14 @@ export const ProductDetails = () => {
                       className="accordion-collapse collapse"
                       data-bs-parent="#accordionExample"
                     >
-                      <div className="accordion-body">Producto Nuevo</div>
+                      <div className="accordion-body">Buen Estado</div>
                     </div>
                   </div>
                 </div>
-                <div className="mt-5">Informacion del vendedor </div>
+              </div>
+              <div className="mt-3">
+                <h5>Buyer ID: {buyerId || "Cargando..."}</h5>
+                <h5>Seller ID: {userId || "Cargando..."}</h5>
               </div>
             </div>
           </div>

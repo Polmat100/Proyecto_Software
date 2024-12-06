@@ -23,7 +23,7 @@ export const Header = ({ categories }) => {
     if (query.length > 1) {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/products/search?name=${encodeURIComponent(
+          `http://localhost:8081/api/products/search?name=${encodeURIComponent(
             query
           )}`
         );
@@ -45,7 +45,7 @@ export const Header = ({ categories }) => {
     setResults([]); // Clean the result's list after select
 
     try {
-      const response = await fetch("http://localhost:8080/api/products");
+      const response = await fetch("http://localhost:8081/api/products");
       const data = await response.json();
       const productFinded = data.find((p) => p.id === product.id);
       navigate(`/ProductDetails`, { state: { product: productFinded } });
